@@ -1,20 +1,49 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, forwardRef } from 'react';
+
+import imgCoupleHero from './images/0d036f77-c18c-4f4a-926b-edcf7b02cdfb.jpg';
+import imgDetailVase from './images/7f2d03e1-f71d-4a37-bb7f-21d6f208ad52.jpg';
+import imgCoral from './images/coral.png';
 
 // --- Assets & Data ---
 const IMAGES = {
-  coupleHero: "https://lh3.googleusercontent.com/aida-public/AB6AXuAg_mFgrvj5eSq2rzp2KLC4CwUS9hRTi1eAvg6jD6nMT8TIdr6d9ptznrQM1mhx6ObU_-EWT5pTlom6sGKdXRf6AsTv7c-0Hu0-z0ICx1RIMoDI0BXksokE1i0DaLkiptl_cFf8zg07LybixfsFxWo4RnBG8ortZMfo72YESzHKWl_owpROzGkWDC-1zLFLQOkZ_RkUA8mqX6oCuwXFvhKs5BrwrOJaFB6KnPtYSGgqPMPvRx1Lsj3_Od1KbgCjvc0eojRULI0JP68",
-  detailVase: "https://lh3.googleusercontent.com/aida-public/AB6AXuAZ7JLcPV2Z6imx3HwvrlipXL9n2uehxOPCIvHbesQrJBhqvYURM6SJGdf-cdP1Q7vFc9ADW92RLW76Vjh6rcc9_d-Gbget_Ln7ItJC8TLLpuJ_Vhqrr1iFb05T3-Xxf4RsKGzSOA0mvMQG5dk2K5T1ctvdHTh9Bp4BCX55OJCHvvrbyYUu3YgKH4n0Bw7sr5yXtuCT52bK6D8JagJnyGDbmgcn80y5zPp7kDPodpiRRnr90_K2nqMQtpfPjboAcIMd66Ykfosm2Ns",
-  moodM: "https://lh3.googleusercontent.com/aida-public/AB6AXuAT_qw_v1UbosE_rNwjLhVQWJzBPNuF1TT4j8QDA9z0iuwE5FrWTqHw-9MlHjHqtO3NJsxmwx4aPNd2JE-OG9uvvQYL5sDfVohQvWxbIna19WOB1vb1Z0U4j3e0eAo7RUtw5wgKONVXaLi581Vxqw6dX9366yyQ3njmRix6h3WjhnXRqMmWfK72h1Nm2nqc-pN6iGPbDYm7hUuhvAmf0R73E5f1Kb1lqXUSrQ9LdfnP-Lcaq1Md039Z0IfX7wi1gE1id-MGA84m7Ew",
-  moodO: "https://lh3.googleusercontent.com/aida-public/AB6AXuAXs7p3PnU8cqTD2rRCR_UTEEeY3w3xo_njiFpkSLm0L8KTnTyLlkkAnLhsVPvhEPYmPPgpDiB11ZVQwmEUSC3fIs7odLPBFKifXKaIu9FrJfa4zwGNjjUHhTYf-Z-zfcKYY4RF_waroEpwWACZxQop2Orj41oo8ZzNe6vh_7j9m-vJeWyU3dXhRrxVWoBlvjx6dXmfSNdi01Yv0Kpx6dxKOIXjZAvPhb2DHAVDuBcH2ETrjR-WYmHr5doe5gdPqrBOmg56IpfwLCk",
-  moodR: "https://lh3.googleusercontent.com/aida-public/AB6AXuDwfs2rZDDrhzDA3zLr0rfk3gGu1FgGOrm0h5KavQzBP3lPxnP_lAs7WZXZwINlT_UAmUtwO9_n8ZWiTxAhDd6XGKfNejYqnRSrIs45EmcbCqOprJUYZP84JG3EjfKrNTX14VbCVmc6sPgkVzNKkeo5Y53BdFCoMaK11O7QMhObUUgD9m7N3-y-ijMddTPelurb3RWupwM1xfou7Ag5Bomnho_NKVPBnVCy7-ebtlKe6QB4Jmj2C5Is64r0UX-UNWA6Xhsk287-xuc",
-  galleryHero: "https://lh3.googleusercontent.com/aida-public/AB6AXuCjWZGe7rJeMJaSZsUfhLopbfkrfknG_qCKplIoBJJUCV-FiV8m8gpfjpT3Hfh1ijRKz5D_gEcYXjKxwz4Ij1ttgbuywhRq5ux00we5x0Hhjbk4Q4JAUfEys718v6HLvuUEodtvCXjVeNDMCwSzNu_RRGzmdogCyR813cn8NPQ-nqLuEv-HCexGHHBQMhYVG8WuFQR47fYaA3rlF8ipHKfDAKZxz7tYpTl_HdfVzecyoCosl4xHAg_lda-TkAeuG2V-kru2VkZCa3U",
-  gallerySunset: "https://lh3.googleusercontent.com/aida-public/AB6AXuDoyobMeEEQu9jvwO6AtHrOTD9wEkJYlsvTD7DoFEG3Umv4uTTbpgPbFKs_wkI9RWl2SaMyFOQ3GFcYBuGUpTR4_eQn_5lnauu6Q-nm8UUVpINksCauGmj_zXUmuUEWqgj2-cC1UY83kVFyyz3MrLierMVcnhzhdG117jT8ZvugJsVEhn_OyCb5L9LzTB9wdbg6PJfhoiS9BzDu10KaRwses4L5UGXktuR-FK1hWMENzOfzFkEhwigzNAeO1UyajvXbxdye-bL-S14",
-  galleryFlower: "https://lh3.googleusercontent.com/aida-public/AB6AXuAbaGpI8PHnjfVnQM2EcZaQkv2hyDrIG6ImeR26Dym3ZDqcU2dT91OnuuuwkE6-hbWe7FFBM3gM4V51mbf3aDFg5hzL-OLomV6F6-uYbV7FYcUdX9LS-drM1uVdGvUcQQWfhymf5qhMdrbum1UcC-qA3AK9503VZ6D_0blNLyjsg3pWmyeq5G9R6GgXcAQFXNCzF-k7NLlPkH7wZFBjLNa22sgR7bjl4tyZ92l7WVmZfOG2qECKdAffeReuu28JSYnzlgkjl-wOkwo",
-  galleryHands: "https://lh3.googleusercontent.com/aida-public/AB6AXuDgXTSh2rS6Ho3ZUCI21BbZRwJ57wBvHwDHeHlN1xAXBbfTK_tsgFMoMEaLNJDZdgfoj0eL6Pvc7Yyx9LpvgmO-ROUEVIQ6IjmG5lnn8KzcjTJoZel5-sqnlqUgXHcbOw93M5gM5nZGVSgp8ZpnFTRgLIExAvfm356BN4bZlYrHTtN6BWvIYRdTfd3cBM0Q6cY2TkzSyQrO1at7Y_Zl918WMIm0Qv2AowjP7S77CDv3SaSpi7z9mNP-1QnueSzqb2BQZSpf1nOnAx4",
-  galleryCity: "https://lh3.googleusercontent.com/aida-public/AB6AXuBu6cto2ZfWptLVWepFk4QpDe7ovuQQop4vbZ7dknKmC7JXE6NB5JDrI8_0CFLFF5H-fqupZ_uQQxk6YA_U37f7EL0xtwPmlm1wfxs3VBBvLawCE8PD-m-tBoCypQUUMlE4Pyv4zRLKdeeE2XtojR-lZYwVxs5Fbh4RL-QlZJcrEbSKRW_uOnb5fiy6fUuXV7fx9pSm-mGI7pzDEACpxxe7wsiCgEO8pMt8YQt1U1XGbfbNdKR_yGcgfFduVCefcpxW2fArKSsPACI",
-  galleryCoffee: "https://lh3.googleusercontent.com/aida-public/AB6AXuDlVFuWQW-ZZTDFgm8ZNK3Sk0qsj3dtSpGTSxQnc08YLEPqnwNyWgMqj4Eta09Ti1Ms-YViOAMeIJiSRDufHVk5XLFveHkN2IEvmh9eg4tqrLCLZEgYu42bT6_2PqVFllDpiDNyzmnQt7kX-kwTrohrLLjkoSZXcqw7dYLPoFmsbGC8BVpfNmuAmWyAnF0EOGGk8gmwYbMKpPvrEZHkVlcGhrnZuSq5ItVaMhyUlZ_-lBs9Pqgafrnc9WMElVjCoV2DtmGkk_cZa68",
-  galleryBeach: "https://lh3.googleusercontent.com/aida-public/AB6AXuCodzfHyrzZ8bJBBxixQC98qbINUF_jK1YbQt3cJdWSDvQyEoxhm9g4x0hJthnjQvgBu3O7eAzX-0zZ6-pQfUESBPVzlvK5eVTLvQUa-vw5XEqUU6RKiRN1MZbjelQ4reyXEa6sQIjX_t7ZpYREwwl-W3VrWZ5gCehENneViKMxJjwLR-ox6F1JhXbeNJmXCgUTPlxYYN_Mac8bjF3SqGtVyb7iEUZqMF4JI1eaaI9HUvu4L0FjCW1NQCaneBm-eQSqbI_zcrRzr8g",
+  hero: imgCoral,
+  coupleHero: imgCoupleHero,
+  detailVase: imgDetailVase,
+  moodM: imgCoupleHero,
+  moodO: imgDetailVase,
+  moodR: imgDetailVase,
+  galleryHero: imgCoral,
+  gallerySunset: imgDetailVase,
+  galleryFlower: imgCoral,
+  galleryHands: imgCoupleHero,
+  galleryCity: imgDetailVase,
+  galleryCoffee: imgDetailVase,
+  galleryBeach: imgCoral,
 };
+
+const VIDEOS = {
+  abrazoBeso: "/videos/Generando_video_de_abrazo_y_beso.mp4",
+  momento: "/videos/ec8896647688464593de236fd51db88c.mov",
+  clip: "/videos/4707741fc4f0405d8a8983778baa6210.mov",
+  img0524: "/videos/IMG_0524.MOV",
+};
+
+const LOCAL_GALLERY = [imgDetailVase, imgCoral];
+
+const LIGHTBOX_DESCRIPTIONS: Record<string, string> = {
+  [IMAGES.galleryHero]: '…aquí estábamos los dos.',
+  [IMAGES.gallerySunset]: '…aquella tarde dorada, callados mirando el atardecer.',
+  [IMAGES.galleryFlower]: '…el día que me regalaste flores.',
+  [IMAGES.galleryHands]: '…tomados de la mano, como siempre.',
+  [IMAGES.galleryCity]: '…esa noche en la ciudad, perdidos y felices.',
+  [IMAGES.galleryCoffee]: '…aquí estábamos comiendo felices.',
+  [IMAGES.galleryBeach]: '…el día que el mundo era solo nuestro.',
+  [imgDetailVase]: '…un detalle que quedó guardado.',
+  [imgCoral]: '…ese día juntos.',
+};
+function getLightboxDescription(src: string): string {
+  return LIGHTBOX_DESCRIPTIONS[src] ?? '…un instante guardado.';
+}
 
 // --- Parallax Hook ---
 // Listens to the scroll container and returns a function that calculates
@@ -83,7 +112,7 @@ const ParallaxImage = ({
 
 // --- Component Parts ---
 
-const Lightbox = ({ src, onClose }: { src: string; onClose: () => void }) => {
+const Lightbox = ({ src, description, onClose }: { src: string; description?: string; onClose: () => void }) => {
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -142,8 +171,15 @@ const Lightbox = ({ src, onClose }: { src: string; onClose: () => void }) => {
         <img src={src} alt="Lightbox" className="max-h-[90vh] max-w-[90vw] object-contain shadow-2xl" />
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/50 px-4 py-2 rounded-full text-white/70 text-sm backdrop-blur-sm pointer-events-none">
-        Scroll to zoom • Drag to pan
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-[90vw] flex flex-col items-center gap-3 pointer-events-none">
+        <div className="bg-black/50 px-4 py-2 rounded-full text-white/70 text-sm backdrop-blur-sm">
+          Scroll to zoom • Drag to pan
+        </div>
+        {description && (
+          <p className="text-white/90 text-sm text-center max-w-sm px-4 font-display italic leading-relaxed">
+            {description}
+          </p>
+        )}
       </div>
     </div>
   );
@@ -154,59 +190,49 @@ const Header = () => (
     <div className="absolute top-6 left-6 z-50 px-3 py-1 bg-white border-2 border-ink shadow-brutalist-sm">
       <span className="font-body font-bold text-[10px] tracking-widest text-ink uppercase">Vol. 01</span>
     </div>
-    <div className="absolute top-6 right-6 z-50">
-      <button
-        className="size-10 flex items-center justify-center bg-cream border-2 border-ink shadow-brutalist-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-neutral-100"
-        aria-label="Menu"
-      >
-        <span className="material-symbols-outlined text-ink text-xl">menu</span>
-      </button>
-    </div>
   </>
 );
 
-const Hero = () => {
-  const imgRef = useRef<HTMLDivElement>(null);
-  const { getParallaxStyle } = useParallax();
-
-  return (
-    <section className="relative h-[85vh] w-full bg-ink overflow-hidden border-b-4 border-ink">
-      <div ref={imgRef} className="absolute inset-0 overflow-hidden">
-        <img
-          alt="Couple B&W"
-          className="absolute inset-0 w-full h-[120%] object-cover opacity-80 grayscale contrast-125 parallax-img"
-          style={getParallaxStyle(imgRef, 0.12)}
-          src={IMAGES.coupleHero}
-        />
+const Hero = () => (
+  <section className="relative h-[85vh] w-full bg-ink overflow-hidden border-b-4 border-ink">
+    <img
+      alt="Hero"
+      className="absolute inset-0 w-full h-full object-cover opacity-80 grayscale contrast-125"
+      src={IMAGES.hero}
+    />
+    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-ink/90"></div>
+    <div className="absolute bottom-12 left-6 right-6">
+      <h1 className="font-display italic text-cream text-6xl leading-[0.9] tracking-tighter mix-blend-difference">
+        Nuestra<br />Historia
+      </h1>
+      <div className="mt-6 flex items-center gap-4">
+        <div className="h-[1px] w-12 bg-cream"></div>
+        <span className="font-body text-cream text-xs tracking-[0.2em] uppercase">Scroll to begin</span>
       </div>
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-ink/90"></div>
-      <div className="absolute bottom-12 left-6 right-6">
-        <h1 className="font-display italic text-cream text-6xl leading-[0.9] tracking-tighter mix-blend-difference">
-          Nuestra<br />Historia
-        </h1>
-        <div className="mt-6 flex items-center gap-4">
-          <div className="h-[1px] w-12 bg-cream"></div>
-          <span className="font-body text-cream text-xs tracking-[0.2em] uppercase">Scroll to begin</span>
-        </div>
-      </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 const IntroGrid = () => {
   const imgRef = useRef<HTMLDivElement>(null);
+  const letterARef = useRef<HTMLDivElement>(null);
   const { getParallaxStyle } = useParallax();
 
   return (
     <section className="relative bg-cream">
       <div className="grid grid-cols-2">
-        <div className="aspect-square bg-ink border-r-4 border-b-4 border-ink flex items-center justify-center relative overflow-hidden group">
+        <div ref={letterARef} className="aspect-square bg-ink border-r-4 border-b-4 border-ink flex items-center justify-center relative overflow-hidden">
           <div className="absolute inset-0 grid grid-cols-4 opacity-20 pointer-events-none">
             <div className="border-r border-white/20"></div>
             <div className="border-r border-white/20"></div>
             <div className="border-r border-white/20"></div>
           </div>
-          <span className="font-mono-pop text-[140px] leading-none text-white select-none relative z-10 group-hover:scale-110 transition-transform duration-500 cursor-default">
+          <span
+            className="font-mono-pop text-[140px] leading-none text-white select-none relative z-10 cursor-default"
+            style={{
+              transform: `scale(${1 + Math.min(Math.abs((getParallaxStyle(letterARef, 0.08).transform ? Number((getParallaxStyle(letterARef, 0.08).transform as string).match(/-?\d+(\.\d+)?/)?.[0] ?? 0) : 0)) / 120, 0.12)})`,
+            }}
+          >
             A
           </span>
           <span className="absolute bottom-2 right-2 text-white font-mono-pop text-[10px]">001</span>
@@ -230,6 +256,9 @@ const MoodBoard = () => {
   const moodMRef = useRef<HTMLDivElement>(null);
   const moodORef = useRef<HTMLDivElement>(null);
   const moodRRef = useRef<HTMLDivElement>(null);
+  const letterMRef = useRef<HTMLDivElement>(null);
+  const letterORef = useRef<HTMLDivElement>(null);
+  const letterRRef = useRef<HTMLDivElement>(null);
   const { getParallaxStyle } = useParallax();
 
   return (
@@ -247,8 +276,15 @@ const MoodBoard = () => {
             />
           </div>
         </div>
-        <div className="w-2/3 flex items-center justify-center relative overflow-hidden group">
-          <span className="font-mono-pop text-[180px] leading-none text-white absolute -right-4 top-1/2 -translate-y-1/2 opacity-100 group-hover:-translate-x-4 transition-transform duration-500">M</span>
+        <div ref={letterMRef} className="w-2/3 flex items-center justify-center relative overflow-hidden">
+          <span
+            className="font-mono-pop text-[180px] leading-none text-white absolute -right-4 top-1/2 opacity-100"
+            style={{
+              transform: `translateY(-50%) translateX(${-Math.min(Math.abs((getParallaxStyle(letterMRef, 0.12).transform ? Number((getParallaxStyle(letterMRef, 0.12).transform as string).match(/-?\d+(\.\d+)?/)?.[0] ?? 0) : 0)), 16)}px)`,
+            }}
+          >
+            M
+          </span>
         </div>
       </div>
 
@@ -265,8 +301,15 @@ const MoodBoard = () => {
             />
           </div>
         </div>
-        <div className="w-2/3 flex items-center justify-center relative overflow-hidden group">
-          <span className="font-mono-pop text-[180px] leading-none text-white absolute -left-8 top-1/2 -translate-y-1/2 group-hover:translate-x-4 transition-transform duration-500">O</span>
+        <div ref={letterORef} className="w-2/3 flex items-center justify-center relative overflow-hidden">
+          <span
+            className="font-mono-pop text-[180px] leading-none text-white absolute -left-8 top-1/2"
+            style={{
+              transform: `translateY(-50%) translateX(${Math.min(Math.abs((getParallaxStyle(letterORef, 0.12).transform ? Number((getParallaxStyle(letterORef, 0.12).transform as string).match(/-?\d+(\.\d+)?/)?.[0] ?? 0) : 0)), 16)}px)`,
+            }}
+          >
+            O
+          </span>
         </div>
       </div>
 
@@ -283,8 +326,15 @@ const MoodBoard = () => {
             />
           </div>
         </div>
-        <div className="w-2/3 flex items-center justify-center relative overflow-hidden bg-pop-red group">
-          <span className="font-mono-pop text-[180px] leading-none text-ink absolute -right-4 top-1/2 -translate-y-1/2 group-hover:-translate-x-4 transition-transform duration-500">R</span>
+        <div ref={letterRRef} className="w-2/3 flex items-center justify-center relative overflow-hidden bg-pop-red">
+          <span
+            className="font-mono-pop text-[180px] leading-none text-ink absolute -right-4 top-1/2"
+            style={{
+              transform: `translateY(-50%) translateX(${-Math.min(Math.abs((getParallaxStyle(letterRRef, 0.12).transform ? Number((getParallaxStyle(letterRRef, 0.12).transform as string).match(/-?\d+(\.\d+)?/)?.[0] ?? 0) : 0)), 16)}px)`,
+            }}
+          >
+            R
+          </span>
         </div>
       </div>
     </section>
@@ -328,7 +378,7 @@ const Memories = () => {
 
   return (
     <section ref={sectionRef} className="bg-[#fefaf0] relative font-handwriting text-gray-800" style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/paper-fibers.png')" }}>
-      {selectedImage && <Lightbox src={selectedImage} onClose={() => setSelectedImage(null)} />}
+      {selectedImage && <Lightbox src={selectedImage} description={getLightboxDescription(selectedImage)} onClose={() => setSelectedImage(null)} />}
 
       <div className="w-full relative overflow-x-hidden flex flex-col pb-24">
         {/* Header */}
@@ -356,8 +406,8 @@ const Memories = () => {
               <div className="relative aspect-[4/5] overflow-hidden">
                 <img
                   alt="Couple in romantic setting"
-                  className="w-full h-[120%] object-cover parallax-img"
-                  style={{ transform: `translateY(${scrollOffset * 0.06}px)` }}
+                  className="w-full h-[120%] object-cover object-center parallax-img"
+                  style={{ transform: `translateY(${scrollOffset * 0.02}px)` }}
                   src={IMAGES.galleryHero}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
@@ -372,11 +422,47 @@ const Memories = () => {
             </div>
           </div>
 
-          <div className="relative min-h-[600px] mb-12">
+          <div className="relative z-10 mb-12 px-2">
+            <div className="photo-frame rotate-[-1deg] overflow-hidden max-w-sm mx-auto">
+              <div className="aspect-[9/16] bg-ink relative">
+                <video
+                  src={VIDEOS.abrazoBeso}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  playsInline
+                  muted
+                  loop
+                  autoPlay
+                  aria-label="Video momento especial"
+                />
+                <div className="absolute bottom-2 left-2 right-2 text-white text-center">
+                  <p className="font-body text-xs opacity-90">…un momento en movimiento</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative z-10 mb-12 px-2">
+            <div className="photo-frame rotate-[2deg] overflow-hidden max-w-sm mx-auto">
+              <div className="aspect-video bg-ink relative">
+                <video
+                  src={VIDEOS.momento}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  playsInline
+                  muted
+                  loop
+                  autoPlay
+                  aria-label="Video momento"
+                />
+                <div className="absolute bottom-2 left-2 text-white/90 text-xs font-body">…un recuerdo en movimiento</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative min-h-[780px] mb-12">
             {/* Parallax Item 1 */}
             <div
               ref={sunsetRef}
-              className="absolute top-0 left-0 w-3/5 z-10"
+              className="absolute top-0 left-2 w-3/5 z-10"
               style={{ transform: `translateY(${scrollOffset * 0.05}px)` }}
             >
               <div
@@ -387,8 +473,8 @@ const Memories = () => {
                   <div className="overflow-hidden">
                     <img
                       alt="Sunset view"
-                      className="w-full aspect-[2/3] object-cover parallax-img"
-                      style={{ transform: `translateY(${scrollOffset * 0.08}px)` }}
+                      className="w-full aspect-[2/3] object-cover object-center parallax-img"
+                      style={{ transform: `translateY(${scrollOffset * 0.02}px)` }}
                       src={IMAGES.gallerySunset}
                     />
                   </div>
@@ -401,7 +487,7 @@ const Memories = () => {
             {/* Parallax Item 2 */}
             <div
               ref={flowerRef}
-              className="absolute top-10 right-0 w-1/2 z-20"
+              className="absolute top-[220px] right-2 w-1/2 z-20"
               style={{ transform: `translateY(${scrollOffset * -0.05}px)` }}
             >
               <div
@@ -412,8 +498,8 @@ const Memories = () => {
                   <div className="overflow-hidden">
                     <img
                       alt="Flower bouquet"
-                      className="w-full aspect-square object-cover parallax-img"
-                      style={{ transform: `translateY(${scrollOffset * -0.06}px)` }}
+                      className="w-full aspect-square object-cover object-[center_78%] parallax-img"
+                      style={{ transform: `translateY(${scrollOffset * -0.015}px)` }}
                       src={IMAGES.galleryFlower}
                     />
                   </div>
@@ -427,7 +513,7 @@ const Memories = () => {
             {/* Parallax Item 3 */}
             <div
               ref={handsRef}
-              className="absolute top-72 left-8 w-1/2 z-0"
+              className="absolute top-[280px] left-2 w-1/2 z-0"
               style={{ transform: `translateY(${scrollOffset * 0.02}px)` }}
             >
               <div
@@ -438,8 +524,8 @@ const Memories = () => {
                   <div className="overflow-hidden">
                     <img
                       alt="Hands together"
-                      className="w-full aspect-square object-cover parallax-img"
-                      style={{ transform: `translateY(${scrollOffset * 0.04}px)` }}
+                      className="w-full aspect-square object-cover object-center parallax-img"
+                      style={{ transform: `translateY(${scrollOffset * 0.015}px)` }}
                       src={IMAGES.galleryHands}
                     />
                   </div>
@@ -450,7 +536,7 @@ const Memories = () => {
             {/* Parallax Item 4 */}
             <div
               ref={cityRef}
-              className="absolute top-[420px] right-2 w-3/5 z-30"
+              className="absolute top-[470px] right-2 w-3/5 z-30"
               style={{ transform: `translateY(${scrollOffset * -0.08}px)` }}
             >
               <div
@@ -461,8 +547,8 @@ const Memories = () => {
                   <div className="overflow-hidden">
                     <img
                       alt="City walk"
-                      className="w-full aspect-[3/4] object-cover parallax-img"
-                      style={{ transform: `translateY(${scrollOffset * -0.07}px)` }}
+                      className="w-full aspect-[3/4] object-cover object-center parallax-img"
+                      style={{ transform: `translateY(${scrollOffset * -0.02}px)` }}
                       src={IMAGES.galleryCity}
                     />
                   </div>
@@ -471,6 +557,20 @@ const Memories = () => {
                 <div className="absolute -top-3 right-8 w-16 h-5 bg-primary/20 -rotate-12"></div>
               </div>
             </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 mb-12">
+            {LOCAL_GALLERY.map((src, i) => (
+              <div
+                key={i}
+                className="photo-frame cursor-zoom-in transition-transform hover:scale-[1.02] -rotate-1"
+                onClick={() => openLightbox(src)}
+              >
+                <div className="overflow-hidden aspect-square">
+                  <img src={src} alt="" className="w-full h-full object-cover object-center" />
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* ===== ALWAYS YOU MARQUEE ===== */}
@@ -507,7 +607,7 @@ const Memories = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-12 pb-12 relative">
+          <div className="flex flex-col gap-20 pb-12 relative">
             <div
               ref={coffeeRef}
               className="self-start w-3/4 photo-frame -rotate-3 z-10 cursor-zoom-in transition-transform hover:scale-[1.02]"
@@ -516,8 +616,8 @@ const Memories = () => {
               <div className="overflow-hidden">
                 <img
                   alt="Coffee date"
-                  className="w-full h-56 object-cover parallax-img"
-                  style={{ transform: `translateY(${scrollOffset * 0.05}px)` }}
+                  className="w-full h-56 object-cover object-center parallax-img"
+                  style={{ transform: `translateY(${scrollOffset * 0.02}px)` }}
                   src={IMAGES.galleryCoffee}
                 />
               </div>
@@ -525,14 +625,14 @@ const Memories = () => {
             </div>
             <div
               ref={beachRef}
-              className="self-end w-3/4 photo-frame rotate-2 -mt-16 z-20 cursor-zoom-in transition-transform hover:scale-[1.02]"
+              className="self-end w-3/4 photo-frame rotate-2 -mt-6 z-20 cursor-zoom-in transition-transform hover:scale-[1.02]"
               onClick={() => openLightbox(IMAGES.galleryBeach)}
             >
               <div className="overflow-hidden">
                 <img
                   alt="Beach walk"
-                  className="w-full h-56 object-cover parallax-img"
-                  style={{ transform: `translateY(${scrollOffset * -0.05}px)` }}
+                  className="w-full h-56 object-cover object-center parallax-img"
+                  style={{ transform: `translateY(${scrollOffset * -0.02}px)` }}
                   src={IMAGES.galleryBeach}
                 />
               </div>
@@ -576,73 +676,276 @@ const LoveNote = () => (
   </section>
 );
 
-const Surprise = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const Vows = () => (
+  <section className="bg-cream border-t-4 border-ink py-12 px-8 relative">
+    <header className="border-b border-ink/20 pb-4 mb-8">
+      <p className="text-[10px] uppercase tracking-[0.3em] text-ink/50 mb-2 font-body font-medium">Correspondence</p>
+      <h2 className="font-body text-2xl font-light tracking-[0.15em] text-ink uppercase italic">
+        Vows
+      </h2>
+    </header>
+    <article>
+      <div className="font-body text-base leading-[1.8] text-ink/90">
+        <p className="drop-cap mb-6 text-justify">
+          Every word I write to you is a fragment of a promise, a reflection of the quiet moments we share. In the stillness of the morning and the chaos of the day, you remain the constant melody in my life&apos;s soundtrack.
+        </p>
+        <p className="mb-8 text-justify">
+          I promise to hold your hand through the shifting seasons, to be the sanctuary where your heart finds rest, and to celebrate the ordinary as if it were the most grand adventure.
+        </p>
+      </div>
+      <div className="mt-8 border-t border-ink/10 pt-6">
+        <p className="text-ink/60 text-sm italic mb-1 font-body">With all my heart,</p>
+        <span className="font-handwriting text-2xl text-ink/80">
+          Yours Forever
+        </span>
+      </div>
+      <div className="mt-10 flex items-center justify-between text-[10px] tracking-widest text-ink/50 uppercase border-y border-ink/10 py-4 font-body">
+        <span>14 Feb 2025</span>
+        <span className="flex items-center gap-1.5">
+          <span className="w-1 h-1 bg-wine rounded-full"></span>
+          True Love
+        </span>
+      </div>
+    </article>
+  </section>
+);
 
-  return (
-    <section className="bg-pop-yellow border-t-4 border-b-4 border-ink py-16 px-6 relative overflow-hidden">
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{ backgroundImage: "radial-gradient(#000 1px, transparent 1px)", backgroundSize: "20px 20px" }}
-      ></div>
-      <div className="relative z-10 flex flex-col items-center">
+const Surprise = ({ onOpen }: { onOpen: () => void }) => (
+  <section className="relative overflow-hidden flex flex-col bg-white border-t-4 border-b-4 border-ink">
+    <div className="relative min-h-[60vh] bg-[#FFF000] flex flex-col items-center justify-center border-b-[5px] border-ink">
+      <h1 className="font-mono-pop text-[6rem] md:text-[8rem] text-ink gift-brutal-shadow leading-none select-none pointer-events-none opacity-90 mb-8">
+        GIFT
+      </h1>
+      <div className="absolute bottom-0 w-full flex flex-col items-center translate-y-4">
+        <div className="absolute top-[-40px] left-8 transform -rotate-12 z-40 bg-pink-500 border-4 border-ink px-4 py-2 font-mono-pop text-white text-lg gift-sticker-shadow animate-gift-float">
+          BOOM!
+        </div>
+        <div className="absolute bottom-10 right-6 transform rotate-12 z-40 bg-[#0df2f2] border-4 border-ink px-4 py-2 font-mono-pop text-ink text-lg gift-sticker-shadow">
+          LOVE
+        </div>
+        <div className="relative z-30 mb-[-10px]">
+          <div className="w-40 h-40 bg-white border-[5px] border-ink gift-box-depth flex items-center justify-center relative">
+            <div className="absolute w-full h-8 bg-[#FF2D55] border-y-[5px] border-ink"></div>
+            <div className="absolute h-full w-8 bg-[#FF2D55] border-x-[5px] border-ink"></div>
+            <div className="absolute -top-10 flex justify-center w-full">
+              <div className="w-14 h-14 bg-[#FF2D55] border-[5px] border-ink rounded-full transform -rotate-45 translate-x-3"></div>
+              <div className="w-14 h-14 bg-[#FF2D55] border-[5px] border-ink rounded-full transform rotate-45 -translate-x-3"></div>
+            </div>
+          </div>
+        </div>
+        <div className="w-56 h-14 bg-cream border-[5px] border-ink rounded-t-xl z-20"></div>
+      </div>
+    </div>
+    <div className="flex-grow bg-white flex flex-col items-center justify-start py-12 px-8">
+      <div className="w-24 h-[1px] bg-[#D4AF37] mb-12"></div>
+      <p className="font-display text-3xl text-ink text-center italic mb-12 leading-relaxed">
+        Un detalle para ti
+      </p>
+      <div className="flex flex-col items-center gap-2 mb-12">
+        <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 font-body">Exclusive Digital Greeting</span>
+        <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 font-body">Valentine&apos;s Collection 2025</span>
+      </div>
+      <div className="w-full px-4">
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-48 h-48 relative mb-6 group cursor-pointer focus:outline-none"
+          type="button"
+          onClick={onOpen}
+          className="w-full bg-ink text-cream font-mono-pop font-bold text-xl py-5 rounded-lg uppercase tracking-widest border-2 border-ink gift-neon-shadow active:translate-y-1 active:translate-x-1 active:shadow-none transition-all"
         >
-          <div className={`absolute inset-0 bg-white border-4 border-ink shadow-brutalist flex items-center justify-center transition-all duration-300 ${isOpen ? 'rotate-0 scale-95' : 'rotate-3 group-hover:rotate-1'}`}>
-            <span className={`material-symbols-outlined text-6xl text-ink transition-all duration-300 ${isOpen ? 'scale-125 text-pop-red' : ''}`}>
-              {isOpen ? 'favorite' : 'redeem'}
-            </span>
-          </div>
-          <div className="absolute -top-4 -right-4 bg-pop-red text-white font-mono-pop text-xs px-2 py-1 border-2 border-ink -rotate-12 group-hover:-rotate-6 transition-transform">
-            SURPRISE!
-          </div>
+          Open
         </button>
-        <h3 className="font-mono-pop text-2xl text-ink text-center uppercase mb-2">
-          {isOpen ? "For You!" : "Open Your Gift"}
-        </h3>
-        <p className="font-body text-sm text-ink/80 text-center max-w-[200px]">
-          {isOpen ? "You make every day brighter." : "A little something for being amazing."}
-        </p>
-      </div>
-    </section>
-  );
-}
-
-const Ticket = () => (
-  <section className="bg-ink py-12 px-4 flex justify-center">
-    <div className="bg-cream w-full max-w-[340px] border-2 border-cream relative flex hover:translate-y-1 transition-transform cursor-pointer group">
-      <div className="w-[30%] border-r-2 border-dashed border-ink bg-pop-red flex items-center justify-center relative overflow-hidden">
-        <div className="absolute w-4 h-4 bg-ink rounded-full -top-2 -right-2"></div>
-        <div className="absolute w-4 h-4 bg-ink rounded-full -bottom-2 -right-2"></div>
-        <span className="text-vertical font-mono-pop text-ink/20 text-4xl font-bold absolute left-2 select-none">TICKET</span>
-        <span className="text-vertical font-body font-bold text-cream tracking-widest text-xs z-10 group-hover:text-ink transition-colors">VALID 2025</span>
-      </div>
-      <div className="w-[70%] p-6 flex flex-col items-center justify-center text-center relative">
-        <div className="absolute w-4 h-4 bg-ink rounded-full -top-2 -left-2"></div>
-        <div className="absolute w-4 h-4 bg-ink rounded-full -bottom-2 -left-2"></div>
-        <h4 className="font-display italic text-2xl text-wine mb-2">Vale Por</h4>
-        <p className="font-mono-pop text-xl text-ink uppercase leading-tight mb-4">
-          Una Cena<br />Romántica
-        </p>
-        <div className="w-full h-px bg-ink/20 mb-2"></div>
-        <p className="font-body text-[10px] uppercase tracking-widest text-ink/60">No Expiration Date</p>
       </div>
     </div>
   </section>
 );
 
-const Footer = () => (
-  <footer className="bg-cream py-10 flex flex-col items-center border-t-4 border-ink">
-    <div className="font-mono-pop text-ink text-2xl tracking-tighter mb-2 hover:tracking-normal transition-all duration-300">14-02-25</div>
-    <p className="font-display italic text-ink/50 text-sm">Happy Valentine's Day</p>
-  </footer>
-);
+const TICKET_QR_SRC = "https://lh3.googleusercontent.com/aida-public/AB6AXuCVzUJFBKdED-72FtrusZPunT7uKhUaIfPOICx7osf8Wxa8ShxClFVgTJgq78U_zlYLL9dJLgOZOelpYD7MmpoDiwnGhQEIVBbkbBXvdFjmEoIULbSJtH9mxGGHN91ZeRhiETRprfGr_340PLpBZpGXSlKz1hDpjHmrOSMkaaqANWHsN9Huzkwn2ApJ8qKCEF0_YaTFXLOnkkXAAQhTuI_EXImJqnuMTPmyIZo3cyFvifNw7M9I7xkmIubAOwERNFTowR5d0Szj83o";
+
+const Ticket = forwardRef<HTMLElement>(function Ticket(_, ref) {
+  return (
+  <section ref={ref} className="bg-ink py-12 px-4 flex flex-col items-center border-t-4 border-ink relative overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none opacity-20 z-0">
+      <span className="absolute top-10 left-10 text-pop-red text-2xl font-mono-pop">+</span>
+      <span className="absolute top-1/4 right-20 text-pop-red text-xl font-mono-pop">X</span>
+      <span className="absolute bottom-1/4 left-1/3 text-pop-red text-lg font-mono-pop">+</span>
+      <span className="absolute bottom-10 right-10 text-pop-red text-3xl font-mono-pop">X</span>
+    </div>
+    <div className="relative w-full max-w-[340px] z-10">
+      <div className="absolute inset-0 bg-ink translate-x-2 translate-y-2 rounded-xl" aria-hidden></div>
+      <div className="ticket-shape flex min-h-[420px] rounded-xl overflow-hidden relative">
+        <div className="w-[30%] bg-pop-red flex flex-col items-center justify-center py-8 relative shrink-0">
+          <div className="absolute top-4 font-mono-pop text-[10px] text-white/40 tracking-tighter">02 / 14</div>
+          <h1 className="font-mono-pop text-white text-3xl ticket-vertical-text tracking-tighter leading-none">
+            VALE POR
+          </h1>
+          <div className="absolute bottom-4 flex flex-col gap-1">
+            <span className="w-2 h-2 bg-white rounded-full"></span>
+            <span className="w-2 h-2 bg-white/40 rounded-full"></span>
+          </div>
+        </div>
+        <div className="w-[70%] bg-[#F5F5DC] p-6 flex flex-col relative min-w-0">
+          <div className="flex justify-between items-start border-b border-[#4a0404]/20 pb-4 mb-6">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#4a0404] font-body">Ticket No. 8829-V</div>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#4a0404] font-body">L&apos;Amour Edition</div>
+          </div>
+          <div className="flex-grow">
+            <p className="text-[10px] uppercase tracking-widest text-pop-red font-bold mb-2 italic font-body">Special Invitation</p>
+            <h2 className="font-display text-2xl text-[#4a0404] italic leading-tight mb-4">
+              Una cena bajo las estrellas
+            </h2>
+            <div className="space-y-3">
+              <div className="flex flex-col">
+                <span className="text-[9px] uppercase font-bold text-[#4a0404]/60 font-body">Location</span>
+                <span className="text-sm font-semibold text-[#4a0404] border-b border-[#4a0404]/10 pb-1 font-body">Mirador de la Cumbre</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[9px] uppercase font-bold text-[#4a0404]/60 font-body">Date &amp; Time</span>
+                <span className="text-sm font-semibold text-[#4a0404] border-b border-[#4a0404]/10 pb-1 font-body">Feb 14, 2025 • 21:00</span>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-between items-end mt-6 gap-2">
+            <div className="flex-1 min-w-0 pr-2">
+              <div className="font-mono-pop text-[8px] text-pop-red mb-1 tracking-widest">CONFIDENTIAL</div>
+              <p className="text-[8px] leading-relaxed text-[#4a0404]/70 font-body">Este ticket es personal e intransferible. Válido para una experiencia inolvidable.</p>
+            </div>
+            <div className="relative shrink-0">
+              <div className="w-16 h-16 bg-ink p-1 ticket-qr-shadow">
+                <img alt="Redemption QR Code" className="w-full h-full filter invert" src={TICKET_QR_SRC} />
+              </div>
+              <span className="absolute -top-2 -right-2 text-pop-red font-mono-pop text-[10px]">+</span>
+            </div>
+          </div>
+          <span className="absolute top-1/2 right-2 text-[#4a0404]/10 font-mono-pop text-3xl select-none pointer-events-none">X</span>
+        </div>
+      </div>
+    </div>
+    <div className="w-full max-w-[340px] mt-8 grid grid-cols-2 gap-3 z-10">
+      <button
+        type="button"
+        className="bg-pop-red text-white py-3 rounded-xl font-bold uppercase tracking-widest text-xs font-body ticket-brutalist-shadow active:translate-x-1 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2"
+      >
+        <span className="material-symbols-outlined text-sm">account_balance_wallet</span>
+        Add to Wallet
+      </button>
+      <button
+        type="button"
+        className="bg-cream text-[#4a0404] py-3 rounded-xl font-bold uppercase tracking-widest text-xs font-body ticket-brutalist-shadow active:translate-x-1 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2 border-2 border-ink"
+      >
+        <span className="material-symbols-outlined text-sm">share</span>
+        Share Gift
+      </button>
+    </div>
+    <div className="w-full max-w-[340px] mt-8 z-10">
+      <div className="w-32 h-1.5 bg-white/20 rounded-full overflow-hidden mx-auto">
+        <div className="w-2/3 h-full bg-pop-red rounded-full"></div>
+      </div>
+    </div>
+  </section>
+  );
+});
+
+const ANNIVERSARY_DATE = new Date('2026-05-12T00:00:00');
+
+function useCountdown(target: Date) {
+  const [diff, setDiff] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    const tick = () => {
+      const now = new Date();
+      if (now >= target) {
+        setDiff({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
+      const ms = target.getTime() - now.getTime();
+      setDiff({
+        days: Math.floor(ms / (24 * 60 * 60 * 1000)),
+        hours: Math.floor((ms % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000)),
+        minutes: Math.floor((ms % (60 * 60 * 1000)) / (60 * 1000)),
+        seconds: Math.floor((ms % (60 * 1000)) / 1000),
+      });
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [target]);
+
+  return diff;
+}
+
+const Footer = () => {
+  const { days, hours, minutes, seconds } = useCountdown(ANNIVERSARY_DATE);
+
+  return (
+    <footer className="bg-[#f5e6e8] py-12 px-8 flex flex-col border-t-4 border-ink">
+      <section className="flex flex-col items-center justify-center text-center space-y-8">
+        <div className="space-y-4">
+          <div className="w-12 h-[1px] bg-[#b87333] mx-auto mb-6"></div>
+          <p className="font-display italic text-xl text-ink/80 tracking-widest">
+            Desde 2018
+          </p>
+        </div>
+        <div className="space-y-4">
+          <h2 className="font-body font-light text-4xl tracking-[0.2em] uppercase text-ink leading-tight">
+            SAVE<br />THE<br />DATE
+          </h2>
+        </div>
+        <div className="flex justify-center">
+          <span className="material-symbols-outlined text-[#b87333] text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
+            favorite
+          </span>
+        </div>
+      </section>
+
+      <section className="flex flex-col items-center justify-center py-10 px-6 bg-white/30 backdrop-blur-sm border-y border-white/30 my-8">
+        <div className="text-center space-y-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full footer-gold-border mb-2 bg-white/50">
+            <span className="material-symbols-outlined text-[#b87333] text-2xl">calendar_today</span>
+          </div>
+          <div className="space-y-2">
+            <span className="block font-body font-light text-5xl tracking-tight text-ink">
+              14.02.25
+            </span>
+            <span className="block text-[#b87333] font-body font-medium uppercase tracking-[0.4em] text-[10px] mt-4">
+              Valentine&apos;s Day Experience
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <div className="flex flex-col items-center space-y-8">
+        <div className="text-center space-y-3">
+          <p className="font-body text-[10px] uppercase tracking-[0.35em] text-[#b87333] font-medium">
+            Tiempo hasta nuestro 3er aniversario
+          </p>
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-ink">
+            <span className="font-mono-pop text-2xl tracking-tight">{days}d</span>
+            <span className="font-mono-pop text-2xl tracking-tight">{hours}h</span>
+            <span className="font-mono-pop text-2xl tracking-tight">{minutes}m</span>
+            <span className="font-mono-pop text-2xl tracking-tight">{seconds}s</span>
+          </div>
+          <p className="text-ink/50 text-xs font-body">12 Mayo 2026</p>
+        </div>
+      </div>
+      <p className="font-display italic text-ink/60 text-sm tracking-wide text-center mt-8">
+        Att. El amor de tu vida
+      </p>
+    </footer>
+  );
+};
 
 // --- Main App ---
 
 export default function App() {
+  const [showTicket, setShowTicket] = useState(false);
+  const ticketRef = useRef<HTMLElement>(null);
+
+  const handleOpenGift = useCallback(() => {
+    setShowTicket(true);
+    setTimeout(() => {
+      ticketRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }, []);
+
   return (
     <div className="flex justify-center min-h-screen bg-neutral-200">
       <div id="main-scroll-container" className="relative w-full max-w-[420px] bg-cream min-h-screen overflow-y-auto overflow-x-hidden flex flex-col shadow-2xl no-scrollbar">
@@ -652,8 +955,9 @@ export default function App() {
         <MoodBoard />
         <Memories />
         <LoveNote />
-        <Surprise />
-        <Ticket />
+        <Vows />
+        <Surprise onOpen={handleOpenGift} />
+        {showTicket && <Ticket ref={ticketRef} />}
         <Footer />
       </div>
     </div>

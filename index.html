@@ -121,6 +121,64 @@
       will-change: transform;
       transition: none;
     }
+
+    .drop-cap::first-letter {
+      float: left;
+      font-size: 3rem;
+      line-height: 1;
+      padding-top: 2px;
+      padding-right: 6px;
+      color: #5D0E18;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+    }
+
+    .gift-brutal-shadow {
+      text-shadow: 6px 6px 0px #ff00ea;
+    }
+    .gift-neo-border {
+      border-width: 5px;
+      border-color: #1A1A1A;
+    }
+    .gift-neon-shadow {
+      box-shadow: 8px 8px 0px #0df2f2;
+    }
+    .gift-box-depth {
+      box-shadow: 10px 10px 0px #1A1A1A;
+    }
+    .gift-sticker-shadow {
+      box-shadow: 4px 4px 0px #1A1A1A;
+    }
+    @keyframes gift-float {
+      0%, 100% { transform: translateY(0) rotate(-12deg); }
+      50% { transform: translateY(-10px) rotate(-12deg); }
+    }
+    .animate-gift-float {
+      animation: gift-float 3s ease-in-out infinite;
+    }
+
+    .ticket-shape {
+      background-color: #F5F5DC;
+      clip-path: polygon(
+        0% 0%, 0% 45%, 4% 50%, 0% 55%, 0% 100%,
+        100% 100%, 100% 55%, 96% 50%, 100% 45%, 100% 0%
+      );
+    }
+    .ticket-brutalist-shadow {
+      box-shadow: 8px 8px 0px 0px #1A1A1A;
+    }
+    .ticket-qr-shadow {
+      box-shadow: 6px 6px 0px 0px #ccff00;
+    }
+    .ticket-vertical-text {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+    }
+
+    .footer-gold-border {
+      border: 1px solid rgba(212, 175, 55, 0.35);
+    }
   </style>
   <script type="importmap">
 {
