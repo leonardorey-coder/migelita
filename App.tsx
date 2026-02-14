@@ -168,19 +168,16 @@ const Lightbox = ({ src, description, onClose }: { src: string; description?: st
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       >
-        <img src={src} alt="Lightbox" className="max-h-[90vh] max-w-[90vw] object-contain shadow-2xl" />
+        <img src={src} alt="Vista ampliada" className="max-h-[90vh] max-w-[90vw] object-contain shadow-2xl" />
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-[90vw] flex flex-col items-center gap-3 pointer-events-none">
-        <div className="bg-black/50 px-4 py-2 rounded-full text-white/70 text-sm backdrop-blur-sm">
-          Scroll to zoom • Drag to pan
-        </div>
-        {description && (
-          <p className="text-white/90 text-sm text-center max-w-sm px-4 font-display italic leading-relaxed">
+      {description && (
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-full max-w-[85vw] pointer-events-none">
+          <p className="text-white text-lg md:text-xl text-center max-w-md mx-auto px-6 py-4 font-display italic leading-relaxed bg-black/60 backdrop-blur-md rounded-lg border border-white/20 shadow-lg">
             {description}
           </p>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -194,20 +191,20 @@ const Header = () => (
 );
 
 const Hero = () => (
-  <section className="relative h-[85vh] w-full bg-ink overflow-hidden border-b-4 border-ink">
+  <section className="relative min-h-[85vh] w-full bg-ink overflow-hidden border-b-4 border-ink shrink-0">
     <img
-      alt="Hero"
-      className="absolute inset-0 w-full h-full object-cover opacity-80 grayscale contrast-125"
-      src={IMAGES.hero}
+      alt="Couple B&W"
+      className="absolute inset-0 w-full h-full object-cover object-center opacity-80 grayscale contrast-125"
+      src={IMAGES.coupleHero}
     />
-    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-ink/90"></div>
+    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-ink/90" aria-hidden />
     <div className="absolute bottom-12 left-6 right-6">
       <h1 className="font-display italic text-cream text-6xl leading-[0.9] tracking-tighter mix-blend-difference">
         Nuestra<br />Historia
       </h1>
       <div className="mt-6 flex items-center gap-4">
-        <div className="h-[1px] w-12 bg-cream"></div>
-        <span className="font-body text-cream text-xs tracking-[0.2em] uppercase">Scroll to begin</span>
+        <div className="h-[1px] w-12 bg-cream" />
+        <span className="font-body text-cream text-xs tracking-[0.2em] uppercase">Desliza para comenzar</span>
       </div>
     </div>
   </section>
@@ -240,7 +237,7 @@ const IntroGrid = () => {
         <div className="aspect-square bg-cream border-b-4 border-ink p-4 flex items-center justify-center">
           <div ref={imgRef} className="w-full h-full border-2 border-ink p-1 shadow-brutalist-sm rotate-2 bg-white hover:rotate-0 transition-transform duration-300 overflow-hidden">
             <img
-              alt="Detail shot"
+              alt="Detalle"
               className="w-full h-full object-cover grayscale contrast-110 parallax-img"
               style={getParallaxStyle(imgRef, 0.08)}
               src={IMAGES.detailVase}
@@ -266,7 +263,7 @@ const MoodBoard = () => {
       {/* Mood Block */}
       <div className="flex border-b border-white/20 min-h-[180px]">
         <div className="w-1/3 border-r border-white/20 p-4 flex flex-col justify-between">
-          <span className="font-body text-[10px] tracking-widest uppercase text-white/50">Mood</span>
+          <span className="font-body text-[10px] tracking-widest uppercase text-white/50">Estado</span>
           <div ref={moodMRef} className="w-full aspect-[3/4] overflow-hidden border border-white/20 mt-2">
             <img
               alt="Mood M"
@@ -291,7 +288,7 @@ const MoodBoard = () => {
       {/* Origin Block */}
       <div className="flex border-b border-white/20 min-h-[180px] flex-row-reverse">
         <div className="w-1/3 border-l border-white/20 p-4 flex flex-col justify-between bg-ink">
-          <span className="font-body text-[10px] tracking-widest uppercase text-white/50">Origin</span>
+          <span className="font-body text-[10px] tracking-widest uppercase text-white/50">Origen</span>
           <div ref={moodORef} className="w-full aspect-[3/4] overflow-hidden border border-white/20 mt-2 rotate-[-2deg]">
             <img
               alt="Mood O"
@@ -316,7 +313,7 @@ const MoodBoard = () => {
       {/* Rare Block */}
       <div className="flex border-b-4 border-ink min-h-[180px]">
         <div className="w-1/3 border-r border-white/20 p-4 flex flex-col justify-between">
-          <span className="font-body text-[10px] tracking-widest uppercase text-white/50">Rare</span>
+          <span className="font-body text-[10px] tracking-widest uppercase text-white/50">Especial</span>
           <div ref={moodRRef} className="w-full aspect-[3/4] overflow-hidden border border-white/20 mt-2">
             <img
               alt="Mood R"
@@ -385,11 +382,11 @@ const Memories = () => {
         <div className="relative pt-12 pb-16 px-6">
           <div className="absolute top-6 left-4 bg-sun -rotate-2 px-6 py-2 shadow-sm border border-black/5">
             <h1 className="font-title text-3xl tracking-tight text-[#2D3436] relative z-10 uppercase">
-              GALLERY
+              GALERÍA
             </h1>
           </div>
           <div className="flex justify-end items-center mt-12 relative z-10">
-            <span className="bg-primary text-white px-4 py-1 text-sm -rotate-3 font-title shadow-sm">Digital Lookbook 24</span>
+            <span className="bg-primary text-white px-4 py-1 text-sm -rotate-3 font-title shadow-sm">Lookbook digital 24</span>
             <span className="text-primary ml-3 text-2xl animate-pulse">❤</span>
           </div>
           <div className="absolute top-0 right-10 w-20 h-8 scrapbook-tape rotate-12 opacity-50"></div>
@@ -405,7 +402,7 @@ const Memories = () => {
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-24 h-6 scrapbook-tape -rotate-2 z-30"></div>
               <div className="relative aspect-[4/5] overflow-hidden">
                 <img
-                  alt="Couple in romantic setting"
+                  alt="Pareja en escena romántica"
                   className="w-full h-[120%] object-cover object-center parallax-img"
                   style={{ transform: `translateY(${scrollOffset * 0.02}px)` }}
                   src={IMAGES.galleryHero}
@@ -413,11 +410,11 @@ const Memories = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                 <div className="absolute bottom-6 left-4 right-4 text-white">
                   <h2 className="text-3xl leading-none mb-1">Nuestros Momentos</h2>
-                  <p className="text-xs uppercase font-title tracking-wider opacity-90">The Valentine's Edition • Vol. 01</p>
+                  <p className="text-xs uppercase font-title tracking-wider opacity-90">Edición San Valentín • Vol. 01</p>
                 </div>
               </div>
               <div className="absolute -top-3 -right-3 bg-sun border-2 border-dashed border-primary/50 rounded-full w-14 h-14 flex items-center justify-center rotate-12 font-title text-xs text-primary shadow-md">
-                LOVE
+                AMOR
               </div>
             </div>
           </div>
@@ -478,7 +475,7 @@ const Memories = () => {
                       src={IMAGES.gallerySunset}
                     />
                   </div>
-                  <p className="mt-2 text-lg text-gray-600">Golden hours with you...</p>
+                  <p className="mt-2 text-lg text-gray-600">Horas doradas contigo...</p>
                 </div>
                 <div className="absolute top-0 left-4 w-12 h-6 bg-sky/40 rotate-12"></div>
               </div>
@@ -497,7 +494,7 @@ const Memories = () => {
                 <div className="photo-frame border-t-4 border-t-sun">
                   <div className="overflow-hidden">
                     <img
-                      alt="Flower bouquet"
+                      alt="Ramo de flores"
                       className="w-full aspect-square object-cover object-[center_78%] parallax-img"
                       style={{ transform: `translateY(${scrollOffset * -0.015}px)` }}
                       src={IMAGES.galleryFlower}
@@ -523,7 +520,7 @@ const Memories = () => {
                 <div className="photo-frame bg-sky/10">
                   <div className="overflow-hidden">
                     <img
-                      alt="Hands together"
+                      alt="Manos entrelazadas"
                       className="w-full aspect-square object-cover object-center parallax-img"
                       style={{ transform: `translateY(${scrollOffset * 0.015}px)` }}
                       src={IMAGES.galleryHands}
@@ -546,13 +543,13 @@ const Memories = () => {
                 <div className="photo-frame">
                   <div className="overflow-hidden">
                     <img
-                      alt="City walk"
+                      alt="Paseo en la ciudad"
                       className="w-full aspect-[3/4] object-cover object-center parallax-img"
                       style={{ transform: `translateY(${scrollOffset * -0.02}px)` }}
                       src={IMAGES.galleryCity}
                     />
                   </div>
-                  <p className="mt-2 text-lg text-gray-600 text-right">Midnight memories.</p>
+                  <p className="mt-2 text-lg text-gray-600 text-right">Recuerdos de medianoche.</p>
                 </div>
                 <div className="absolute -top-3 right-8 w-16 h-5 bg-primary/20 -rotate-12"></div>
               </div>
@@ -615,7 +612,7 @@ const Memories = () => {
             >
               <div className="overflow-hidden">
                 <img
-                  alt="Coffee date"
+                  alt="Cita de café"
                   className="w-full h-56 object-cover object-center parallax-img"
                   style={{ transform: `translateY(${scrollOffset * 0.02}px)` }}
                   src={IMAGES.galleryCoffee}
@@ -630,7 +627,7 @@ const Memories = () => {
             >
               <div className="overflow-hidden">
                 <img
-                  alt="Beach walk"
+                  alt="Paseo en la playa"
                   className="w-full h-56 object-cover object-center parallax-img"
                   style={{ transform: `translateY(${scrollOffset * -0.02}px)` }}
                   src={IMAGES.galleryBeach}
@@ -655,7 +652,7 @@ const Memories = () => {
 const LoveNote = () => (
   <section className="bg-cream border-t-4 border-ink py-20 px-8 text-center relative">
     <div className="absolute left-1/2 -top-6 -translate-x-1/2 bg-wine text-cream px-4 py-2 border-2 border-ink rotate-2 shadow-brutalist-sm">
-      <span className="font-mono-pop text-xs">FOR YOU</span>
+      <span className="font-mono-pop text-xs">PARA TI</span>
     </div>
     <div className="max-w-[80%] mx-auto">
       <p className="font-body text-ink/70 leading-relaxed mb-8 text-sm">
@@ -679,31 +676,31 @@ const LoveNote = () => (
 const Vows = () => (
   <section className="bg-cream border-t-4 border-ink py-12 px-8 relative">
     <header className="border-b border-ink/20 pb-4 mb-8">
-      <p className="text-[10px] uppercase tracking-[0.3em] text-ink/50 mb-2 font-body font-medium">Correspondence</p>
+      <p className="text-[10px] uppercase tracking-[0.3em] text-ink/50 mb-2 font-body font-medium">Correspondencia</p>
       <h2 className="font-body text-2xl font-light tracking-[0.15em] text-ink uppercase italic">
-        Vows
+        Promesas
       </h2>
     </header>
     <article>
       <div className="font-body text-base leading-[1.8] text-ink/90">
         <p className="drop-cap mb-6 text-justify">
-          Every word I write to you is a fragment of a promise, a reflection of the quiet moments we share. In the stillness of the morning and the chaos of the day, you remain the constant melody in my life&apos;s soundtrack.
+          Cada palabra que te escribo es un fragmento de promesa, un reflejo de los momentos tranquilos que compartimos. En la calma de la mañana y el caos del día, sigues siendo la melodía constante en la banda sonora de mi vida.
         </p>
         <p className="mb-8 text-justify">
-          I promise to hold your hand through the shifting seasons, to be the sanctuary where your heart finds rest, and to celebrate the ordinary as if it were the most grand adventure.
+          Prometo sostener tu mano a través de las estaciones, ser el refugio donde tu corazón descanse y celebrar lo cotidiano como la más grande aventura.
         </p>
       </div>
       <div className="mt-8 border-t border-ink/10 pt-6">
-        <p className="text-ink/60 text-sm italic mb-1 font-body">With all my heart,</p>
+        <p className="text-ink/60 text-sm italic mb-1 font-body">Con todo mi corazón,</p>
         <span className="font-handwriting text-2xl text-ink/80">
-          Yours Forever
+          Tuya para siempre
         </span>
       </div>
       <div className="mt-10 flex items-center justify-between text-[10px] tracking-widest text-ink/50 uppercase border-y border-ink/10 py-4 font-body">
         <span>14 Feb 2025</span>
         <span className="flex items-center gap-1.5">
           <span className="w-1 h-1 bg-wine rounded-full"></span>
-          True Love
+          Amor verdadero
         </span>
       </div>
     </article>
@@ -711,10 +708,10 @@ const Vows = () => (
 );
 
 const Surprise = ({ onOpen }: { onOpen: () => void }) => (
-  <section className="relative overflow-hidden flex flex-col bg-white border-t-4 border-b-4 border-ink">
-    <div className="relative min-h-[60vh] bg-[#FFF000] flex flex-col items-center justify-center border-b-[5px] border-ink">
-      <h1 className="font-mono-pop text-[6rem] md:text-[8rem] text-ink gift-brutal-shadow leading-none select-none pointer-events-none opacity-90 mb-8">
-        GIFT
+  <section className="relative overflow-hidden flex flex-col bg-white border-t-4 border-b-4 border-ink shrink-0">
+    <div className="relative min-h-[60vh] bg-[#FFF000] flex flex-col items-center justify-center border-b-[5px] border-ink shrink-0">
+      <h1 className="font-mono-pop text-[3.75rem] sm:text-[5rem] md:text-[8rem] text-ink gift-brutal-shadow leading-none select-none pointer-events-none opacity-90 mb-8 whitespace-nowrap">
+        REGALO
       </h1>
       <div className="absolute bottom-0 w-full flex flex-col items-center translate-y-4">
         <div className="absolute top-[-40px] left-8 transform -rotate-12 z-40 bg-pink-500 border-4 border-ink px-4 py-2 font-mono-pop text-white text-lg gift-sticker-shadow animate-gift-float">
@@ -736,14 +733,14 @@ const Surprise = ({ onOpen }: { onOpen: () => void }) => (
         <div className="w-56 h-14 bg-cream border-[5px] border-ink rounded-t-xl z-20"></div>
       </div>
     </div>
-    <div className="flex-grow bg-white flex flex-col items-center justify-start py-12 px-8">
+    <div className="min-h-[280px] bg-white flex flex-col items-center justify-start py-12 px-8 shrink-0">
       <div className="w-24 h-[1px] bg-[#D4AF37] mb-12"></div>
       <p className="font-display text-3xl text-ink text-center italic mb-12 leading-relaxed">
         Un detalle para ti
       </p>
       <div className="flex flex-col items-center gap-2 mb-12">
-        <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 font-body">Exclusive Digital Greeting</span>
-        <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 font-body">Valentine&apos;s Collection 2025</span>
+        <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 font-body">Saludo digital exclusivo</span>
+        <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400 font-body">Colección San Valentín 2025</span>
       </div>
       <div className="w-full px-4">
         <button
@@ -751,7 +748,7 @@ const Surprise = ({ onOpen }: { onOpen: () => void }) => (
           onClick={onOpen}
           className="w-full bg-ink text-cream font-mono-pop font-bold text-xl py-5 rounded-lg uppercase tracking-widest border-2 border-ink gift-neon-shadow active:translate-y-1 active:translate-x-1 active:shadow-none transition-all"
         >
-          Open
+          Abrir
         </button>
       </div>
     </div>
@@ -762,7 +759,7 @@ const TICKET_QR_SRC = "https://lh3.googleusercontent.com/aida-public/AB6AXuCVzUJ
 
 const Ticket = forwardRef<HTMLElement>(function Ticket(_, ref) {
   return (
-  <section ref={ref} className="bg-ink py-12 px-4 flex flex-col items-center border-t-4 border-ink relative overflow-hidden">
+  <section ref={ref} className="bg-ink py-12 px-4 flex flex-col items-center border-t-4 border-ink relative shrink-0">
     <div className="absolute inset-0 pointer-events-none opacity-20 z-0">
       <span className="absolute top-10 left-10 text-pop-red text-2xl font-mono-pop">+</span>
       <span className="absolute top-1/4 right-20 text-pop-red text-xl font-mono-pop">X</span>
@@ -785,32 +782,32 @@ const Ticket = forwardRef<HTMLElement>(function Ticket(_, ref) {
         <div className="w-[70%] bg-[#F5F5DC] p-6 flex flex-col relative min-w-0">
           <div className="flex justify-between items-start border-b border-[#4a0404]/20 pb-4 mb-6">
             <div className="text-[10px] font-bold uppercase tracking-widest text-[#4a0404] font-body">Ticket No. 8829-V</div>
-            <div className="text-[10px] font-bold uppercase tracking-widest text-[#4a0404] font-body">L&apos;Amour Edition</div>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[#4a0404] font-body">Edición Amor</div>
           </div>
           <div className="flex-grow">
-            <p className="text-[10px] uppercase tracking-widest text-pop-red font-bold mb-2 italic font-body">Special Invitation</p>
+            <p className="text-[10px] uppercase tracking-widest text-pop-red font-bold mb-2 italic font-body">Invitación especial</p>
             <h2 className="font-display text-2xl text-[#4a0404] italic leading-tight mb-4">
               Una cena bajo las estrellas
             </h2>
             <div className="space-y-3">
               <div className="flex flex-col">
-                <span className="text-[9px] uppercase font-bold text-[#4a0404]/60 font-body">Location</span>
+                <span className="text-[9px] uppercase font-bold text-[#4a0404]/60 font-body">Lugar</span>
                 <span className="text-sm font-semibold text-[#4a0404] border-b border-[#4a0404]/10 pb-1 font-body">Mirador de la Cumbre</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-[9px] uppercase font-bold text-[#4a0404]/60 font-body">Date &amp; Time</span>
+                <span className="text-[9px] uppercase font-bold text-[#4a0404]/60 font-body">Fecha y hora</span>
                 <span className="text-sm font-semibold text-[#4a0404] border-b border-[#4a0404]/10 pb-1 font-body">Feb 14, 2025 • 21:00</span>
               </div>
             </div>
           </div>
           <div className="flex justify-between items-end mt-6 gap-2">
             <div className="flex-1 min-w-0 pr-2">
-              <div className="font-mono-pop text-[8px] text-pop-red mb-1 tracking-widest">CONFIDENTIAL</div>
+              <div className="font-mono-pop text-[8px] text-pop-red mb-1 tracking-widest">CONFIDENCIAL</div>
               <p className="text-[8px] leading-relaxed text-[#4a0404]/70 font-body">Este ticket es personal e intransferible. Válido para una experiencia inolvidable.</p>
             </div>
             <div className="relative shrink-0">
               <div className="w-16 h-16 bg-ink p-1 ticket-qr-shadow">
-                <img alt="Redemption QR Code" className="w-full h-full filter invert" src={TICKET_QR_SRC} />
+                <img alt="Código QR de canje" className="w-full h-full filter invert" src={TICKET_QR_SRC} />
               </div>
               <span className="absolute -top-2 -right-2 text-pop-red font-mono-pop text-[10px]">+</span>
             </div>
@@ -819,32 +816,12 @@ const Ticket = forwardRef<HTMLElement>(function Ticket(_, ref) {
         </div>
       </div>
     </div>
-    <div className="w-full max-w-[340px] mt-8 grid grid-cols-2 gap-3 z-10">
-      <button
-        type="button"
-        className="bg-pop-red text-white py-3 rounded-xl font-bold uppercase tracking-widest text-xs font-body ticket-brutalist-shadow active:translate-x-1 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2"
-      >
-        <span className="material-symbols-outlined text-sm">account_balance_wallet</span>
-        Add to Wallet
-      </button>
-      <button
-        type="button"
-        className="bg-cream text-[#4a0404] py-3 rounded-xl font-bold uppercase tracking-widest text-xs font-body ticket-brutalist-shadow active:translate-x-1 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2 border-2 border-ink"
-      >
-        <span className="material-symbols-outlined text-sm">share</span>
-        Share Gift
-      </button>
-    </div>
-    <div className="w-full max-w-[340px] mt-8 z-10">
-      <div className="w-32 h-1.5 bg-white/20 rounded-full overflow-hidden mx-auto">
-        <div className="w-2/3 h-full bg-pop-red rounded-full"></div>
-      </div>
-    </div>
   </section>
   );
 });
 
 const ANNIVERSARY_DATE = new Date('2026-05-12T00:00:00');
+const FRAME_COUNT = 192;
 
 function useCountdown(target: Date) {
   const [diff, setDiff] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -876,7 +853,7 @@ const Footer = () => {
   const { days, hours, minutes, seconds } = useCountdown(ANNIVERSARY_DATE);
 
   return (
-    <footer className="bg-[#f5e6e8] py-12 px-8 flex flex-col border-t-4 border-ink">
+    <footer className="bg-[#f5e6e8] py-12 px-8 flex flex-col">
       <section className="flex flex-col items-center justify-center text-center space-y-8">
         <div className="space-y-4">
           <div className="w-12 h-[1px] bg-[#b87333] mx-auto mb-6"></div>
@@ -886,7 +863,7 @@ const Footer = () => {
         </div>
         <div className="space-y-4">
           <h2 className="font-body font-light text-4xl tracking-[0.2em] uppercase text-ink leading-tight">
-            SAVE<br />THE<br />DATE
+            RESERVA<br />LA<br />FECHA
           </h2>
         </div>
         <div className="flex justify-center">
@@ -906,7 +883,7 @@ const Footer = () => {
               14.02.25
             </span>
             <span className="block text-[#b87333] font-body font-medium uppercase tracking-[0.4em] text-[10px] mt-4">
-              Valentine&apos;s Day Experience
+              Experiencia Día de San Valentín
             </span>
           </div>
         </div>
@@ -933,11 +910,206 @@ const Footer = () => {
   );
 };
 
+const SMOOTH_LERP = 0.09;
+
+const ScrollFramesSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [progress, setProgress] = useState(0);
+  const targetPhraseRef = useRef(0);
+  const smoothPhraseRef = useRef(0);
+  const [smoothPhraseProgress, setSmoothPhraseProgress] = useState(0);
+
+  useEffect(() => {
+    const container = document.getElementById('main-scroll-container');
+    if (!container) return;
+
+    let ticking = false;
+
+    const updateProgress = () => {
+      if (!sectionRef.current) {
+        ticking = false;
+        return;
+      }
+
+      const sectionTop = sectionRef.current.offsetTop;
+      const sectionHeight = sectionRef.current.offsetHeight;
+      const viewportHeight = container.clientHeight;
+      const start = sectionTop;
+      const end = sectionTop + sectionHeight - viewportHeight;
+      const raw = (container.scrollTop - start) / Math.max(end - start, 1);
+      const scrollProgress = Math.max(0, Math.min(1, raw));
+      const contentProgress = Math.min(1, scrollProgress / 0.76);
+      const targetPhrase = Math.max(0, Math.min(1, (contentProgress - 0.72) / 0.28));
+
+      targetPhraseRef.current = targetPhrase;
+      setProgress(contentProgress);
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateProgress);
+      }
+    };
+
+    container.addEventListener('scroll', onScroll, { passive: true });
+    updateProgress();
+
+    return () => container.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    let rafId: number;
+
+    const animate = () => {
+      const target = targetPhraseRef.current;
+      const current = smoothPhraseRef.current;
+      const next = current + (target - current) * SMOOTH_LERP;
+      smoothPhraseRef.current = next;
+      setSmoothPhraseProgress(next);
+      rafId = requestAnimationFrame(animate);
+    };
+
+    rafId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
+  const frameNumber = Math.min(FRAME_COUNT, Math.max(1, Math.floor(progress * (FRAME_COUNT - 1)) + 1));
+  const frameSrc = `/frames/frame_${String(frameNumber).padStart(6, '0')}.webp`;
+  const darkness = Math.max(0, Math.min(0.88, (progress - 0.82) / 0.18));
+  const phraseOpacity = smoothPhraseProgress;
+  const phraseProgress = smoothPhraseProgress;
+
+  return (
+    <section ref={sectionRef} className="relative bg-ink border-t-4 border-ink">
+      <div className="h-[300vh]">
+        <div className="sticky top-0 h-screen overflow-hidden bg-ink">
+          <div className="absolute inset-0 overflow-hidden">
+            <img
+              src={frameSrc}
+              alt="Secuencia de recuerdos"
+              className="absolute left-1/2 top-1/2 w-[110%] h-[110%] -translate-x-1/2 -translate-y-1/2 object-cover"
+              loading="eager"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/10 to-black/35 pointer-events-none" aria-hidden />
+          <div className="absolute inset-0 bg-black transition-opacity duration-150 pointer-events-none" style={{ opacity: darkness }} aria-hidden />
+
+          <div
+            className="absolute left-6 right-6 text-center will-change-transform"
+            style={{
+              top: '50%',
+              opacity: phraseOpacity,
+              transform: `translateY(calc(-50% + ${(1 - phraseProgress) * 28}vh))`,
+            }}
+          >
+            <p className="font-display italic text-3xl text-cream tracking-wide">
+              Te elijo hoy, manana y siempre.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// --- Scroll inertia ---
+const INERTIA_FRICTION = 0.92;
+const INERTIA_RELEASE_MS = 120;
+const INERTIA_VELOCITY_SMOOTH = 0.75;
+const INERTIA_MIN_VELOCITY = 0.4;
+
+function useScrollInertia(containerRef: React.RefObject<HTMLDivElement | null>) {
+  const velocityRef = useRef(0);
+  const releaseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const lastTouchYRef = useRef(0);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const maxScroll = () => el.scrollHeight - el.clientHeight;
+
+    const runInertia = () => {
+      let v = velocityRef.current;
+      const step = () => {
+        if (Math.abs(v) < INERTIA_MIN_VELOCITY) {
+          rafRef.current = null;
+          return;
+        }
+        const next = el.scrollTop + v;
+        el.scrollTop = Math.max(0, Math.min(maxScroll(), next));
+        v *= INERTIA_FRICTION;
+        velocityRef.current = v;
+        rafRef.current = requestAnimationFrame(step);
+      };
+      rafRef.current = requestAnimationFrame(step);
+    };
+
+    const scheduleInertia = () => {
+      if (releaseTimerRef.current) clearTimeout(releaseTimerRef.current);
+      releaseTimerRef.current = setTimeout(() => {
+        releaseTimerRef.current = null;
+        runInertia();
+      }, INERTIA_RELEASE_MS);
+    };
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const next = el.scrollTop + e.deltaY;
+      el.scrollTop = Math.max(0, Math.min(maxScroll(), next));
+      velocityRef.current = INERTIA_VELOCITY_SMOOTH * velocityRef.current + (1 - INERTIA_VELOCITY_SMOOTH) * e.deltaY;
+      scheduleInertia();
+    };
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (releaseTimerRef.current) clearTimeout(releaseTimerRef.current);
+      releaseTimerRef.current = null;
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+      lastTouchYRef.current = e.touches[0].clientY;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      const y = e.touches[0].clientY;
+      const delta = lastTouchYRef.current - y;
+      lastTouchYRef.current = y;
+      const next = el.scrollTop + delta;
+      el.scrollTop = Math.max(0, Math.min(maxScroll(), next));
+      velocityRef.current = INERTIA_VELOCITY_SMOOTH * velocityRef.current + (1 - INERTIA_VELOCITY_SMOOTH) * delta;
+    };
+
+    const onTouchEnd = () => {
+      scheduleInertia();
+    };
+
+    el.addEventListener('wheel', onWheel, { passive: false });
+    el.addEventListener('touchstart', onTouchStart, { passive: true });
+    el.addEventListener('touchmove', onTouchMove, { passive: false });
+    el.addEventListener('touchend', onTouchEnd, { passive: true });
+
+    return () => {
+      el.removeEventListener('wheel', onWheel);
+      el.removeEventListener('touchstart', onTouchStart);
+      el.removeEventListener('touchmove', onTouchMove);
+      el.removeEventListener('touchend', onTouchEnd);
+      if (releaseTimerRef.current) clearTimeout(releaseTimerRef.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [containerRef]);
+}
+
 // --- Main App ---
 
 export default function App() {
   const [showTicket, setShowTicket] = useState(false);
   const ticketRef = useRef<HTMLElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useScrollInertia(scrollContainerRef);
 
   const handleOpenGift = useCallback(() => {
     setShowTicket(true);
@@ -947,17 +1119,22 @@ export default function App() {
   }, []);
 
   return (
-    <div className="flex justify-center min-h-screen bg-neutral-200">
-      <div id="main-scroll-container" className="relative w-full max-w-[420px] bg-cream min-h-screen overflow-y-auto overflow-x-hidden flex flex-col shadow-2xl no-scrollbar">
+    <div className="flex justify-center h-screen overflow-hidden bg-neutral-200">
+      <div
+        ref={scrollContainerRef}
+        id="main-scroll-container"
+        className="relative w-full max-w-[420px] bg-cream h-screen overflow-y-auto overscroll-y-contain overflow-x-hidden flex flex-col shadow-2xl no-scrollbar"
+      >
         <Header />
         <Hero />
         <IntroGrid />
         <MoodBoard />
         <Memories />
-        <LoveNote />
         <Vows />
         <Surprise onOpen={handleOpenGift} />
         {showTicket && <Ticket ref={ticketRef} />}
+        <ScrollFramesSection />
+        <LoveNote />
         <Footer />
       </div>
     </div>
