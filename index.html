@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valentine's Digital Zine</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rubik+Mono+One&family=Mochiy+Pop+P+One&family=Caveat+Brush&display=swap"
+    rel="stylesheet">
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "wine": "#5D0E18",
+            "cream": "#F9F7F2",
+            "ink": "#1A1A1A",
+            "pop-yellow": "#FFE600",
+            "pop-red": "#E63946",
+            // Gallery Section Colors
+            "primary": "#FF6B6B",
+            "sky": "#BDE0FE",
+            "sun": "#FDFFB6",
+          },
+          fontFamily: {
+            "mono-pop": ["'Rubik Mono One'", "monospace"],
+            "display": ["'Playfair Display'", "serif"],
+            "body": ["'Lato'", "sans-serif"],
+            "title": ["'Mochiy Pop P One'", "sans-serif"],
+            "handwriting": ["'Caveat Brush'", "cursive"],
+          },
+          boxShadow: {
+            "brutalist": "8px 8px 0px 0px rgba(0,0,0,1)",
+            "brutalist-sm": "4px 4px 0px 0px rgba(0,0,0,1)",
+          },
+          animation: {
+            'pulse-slow': 'heartPulse 2s infinite ease-in-out',
+          },
+          keyframes: {
+            heartPulse: {
+              '0%, 100%': { transform: 'scale(1)' },
+              '50%': { transform: 'scale(1.1)' },
+            }
+          }
+        },
+      },
+    }
+  </script>
+
+  <style>
+    body {
+      scroll-behavior: smooth;
+      background-color: #e5e5e5;
+    }
+
+    /* Custom utility for vertical text since Tailwind's writing-mode plugin isn't included by default in CDN */
+    .text-vertical {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
+    }
+
+    /* Gallery Specific Styles */
+    .scrapbook-tape {
+      background-color: rgba(189, 224, 254, 0.6);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .photo-frame {
+      background-color: white;
+      padding: 0.5rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    /* Marquee sliding banner animation */
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+
+    /* Parallax image container */
+    .parallax-img {
+      will-change: transform;
+      transition: none;
+    }
+  </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+  }
+}
+</script>
+  <link rel="stylesheet" href="/index.css">
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>
