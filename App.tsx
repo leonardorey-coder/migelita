@@ -676,10 +676,10 @@ const LoveNote = () => (
     </div>
     <div className="max-w-[80%] mx-auto">
       <p className="font-body text-ink/70 leading-relaxed mb-8 text-sm">
-        En este mundo caótico, tú eres mi paz y mi revolución favorita. Gracias por cada sonrisa, cada momento y cada recuerdo.
+        En todo este universo y vida detestable, tú eres mi paz al final del día. Eres mi tacita de café, mi pancito dulce, mi rebanada de pizza, cada pelito de mis gatitos, cada línea de código y cada latido de mi corazón; eres la parte fundamental de mi existencia. Sin ti yo no sería posible.
       </p>
       <h2 className="font-display font-bold italic text-wine text-5xl md:text-6xl leading-[1.1]">
-        Te Quiero<br />Mucho
+        Te Amo<br />Infinitamente
       </h2>
       <div className="mt-8 flex justify-center">
         <span
@@ -698,26 +698,38 @@ const Vows = () => (
     <header className="border-b border-ink/20 pb-4 mb-8">
       <p className="text-[10px] uppercase tracking-[0.3em] text-ink/50 mb-2 font-body font-medium">Correspondencia</p>
       <h2 className="font-body text-2xl font-light tracking-[0.15em] text-ink uppercase italic">
-        Promesas
+        Para el amor de mi vida
       </h2>
     </header>
     <article>
       <div className="font-body text-base leading-[1.8] text-ink/90">
         <p className="drop-cap mb-6 text-justify">
-          Cada palabra que te escribo es un fragmento de promesa, un reflejo de los momentos tranquilos que compartimos. En la calma de la mañana y el caos del día, sigues siendo la melodía constante en la banda sonora de mi vida.
+          Casi nunca me dedico a crear este tipo de cosas, de hecho, nunca lo hago, pero tú siempre sabes cómo cambiar a las personas para bien y lograr que ocurran los tan aclamados &quot;milagros&quot;.
+        </p>
+        <p className="mb-6 text-justify">
+          Me queda claro que no existen, y que realmente lo que existe es un hecho mucho más hermoso que eso, y estoy hablando de ti. Tú siempre has tenido ese don envidiable de tener paz, de dárselo a los demás, de mejorarlos y siempre ver lo mejor que tiene cada persona. De provocarles los milagros de felicidad.
+        </p>
+        <p className="mb-6 text-justify">
+          Muchas gracias de aplicarlo a mí y hacerme tener la mejor versión de mí, incluso si yo nunca tuve ni la mínima idea de cómo lograr eso.
+        </p>
+        <p className="mb-6 text-justify">
+          Eres la mejor mujer que el mundo pudo haber tenido y por lo tanto soy el hombre más afortunado por tenerte a mi lado.
+        </p>
+        <p className="mb-6 text-justify">
+          Vamos a luchar juntos por más metas y logros; vamos a obtener 12 san Valentines más juntos.
         </p>
         <p className="mb-8 text-justify">
-          Prometo sostener tu mano a través de las estaciones, ser el refugio donde tu corazón descanse y celebrar lo cotidiano como la más grande aventura.
+          Te amo demasiado y con todo mi corazoncito cafetero te deseo lo mejor, mi princesita.
         </p>
       </div>
       <div className="mt-8 border-t border-ink/10 pt-6">
         <p className="text-ink/60 text-sm italic mb-1 font-body">Con todo mi corazón,</p>
         <span className="font-handwriting text-2xl text-ink/80">
-          Tuya para siempre
+          Tuyo para siempre
         </span>
       </div>
       <div className="mt-10 flex items-center justify-between text-[10px] tracking-widest text-ink/50 uppercase border-y border-ink/10 py-4 font-body">
-        <span>14 Feb 2025</span>
+        <span>14 Feb 2026</span>
         <span className="flex items-center gap-1.5">
           <span className="w-1 h-1 bg-wine rounded-full"></span>
           Amor verdadero
@@ -729,7 +741,7 @@ const Vows = () => (
 
 const Surprise = ({ onOpen }: { onOpen: () => void }) => (
   <section className="relative overflow-hidden flex flex-col bg-white border-t-4 border-b-4 border-ink shrink-0">
-    <div className="relative min-h-[60vh] bg-[#FFF000] flex flex-col items-center justify-center border-b-[5px] border-ink shrink-0">
+    <div className="relative min-h-[60vh] bg-[#FFF000] flex flex-col items-center justify-start pt-[10vh] border-b-[5px] border-ink shrink-0">
       <h1 className="font-mono-pop text-[3.75rem] sm:text-[5rem] md:text-[8rem] text-ink gift-brutal-shadow leading-none select-none pointer-events-none opacity-90 mb-8 whitespace-nowrap">
         REGALO
       </h1>
@@ -812,7 +824,7 @@ const Ticket = forwardRef<HTMLElement>(function Ticket(_, ref) {
             <div className="space-y-3">
               <div className="flex flex-col">
                 <span className="text-[9px] uppercase font-bold text-[#4a0404]/60 font-body">Lugar</span>
-                <span className="text-sm font-semibold text-[#4a0404] border-b border-[#4a0404]/10 pb-1 font-body">Mirador de la Cumbre</span>
+                <span className="text-sm font-semibold text-[#4a0404] border-b border-[#4a0404]/10 pb-1 font-body">Zoológico de Tizi y Cena en la Estación</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-[9px] uppercase font-bold text-[#4a0404]/60 font-body">Fecha y hora</span>
@@ -986,17 +998,17 @@ const Footer = () => {
   const { days, hours, minutes, seconds } = useCountdown(ANNIVERSARY_DATE);
 
   return (
-    <footer className="bg-[#f5e6e8] py-12 px-8 flex flex-col">
+    <footer className="bg-[#f5e6e8] py-12 px-8 pb-24 flex flex-col">
       <section className="flex flex-col items-center justify-center text-center space-y-8">
         <div className="space-y-4">
           <div className="w-12 h-[1px] bg-[#b87333] mx-auto mb-6"></div>
           <p className="font-display italic text-xl text-ink/80 tracking-widest">
-            Desde 2018
+            Desde 2023
           </p>
         </div>
         <div className="space-y-4">
           <h2 className="font-body font-light text-4xl tracking-[0.2em] uppercase text-ink leading-tight">
-            RESERVA<br />LA<br />FECHA
+            JUNTOS<br />POR<br />SIEMPRE
           </h2>
         </div>
         <div className="flex justify-center">
@@ -1016,7 +1028,7 @@ const Footer = () => {
               14.02.25
             </span>
             <span className="block text-[#b87333] font-body font-medium uppercase tracking-[0.4em] text-[10px] mt-4">
-              Experiencia Día de San Valentín
+              Día de San Valentín
             </span>
           </div>
         </div>
