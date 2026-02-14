@@ -669,15 +669,15 @@ const Memories = () => {
 };
 
 const LoveNote = () => (
-  <section className="bg-cream border-t-4 border-ink py-20 px-8 text-center relative">
+  <section className="bg-cream border-t-4 border-ink py-20 px-8 text-center relative overflow-visible">
     <div className="absolute left-1/2 -top-6 -translate-x-1/2 bg-wine text-cream px-4 py-2 border-2 border-ink rotate-2 shadow-brutalist-sm">
       <span className="font-mono-pop text-xs">PARA TI</span>
     </div>
-    <div className="max-w-[80%] mx-auto">
-      <p className="font-body text-ink/70 leading-relaxed mb-8 text-sm">
+    <div className="max-w-[95%] mx-auto overflow-visible">
+      <p className="font-body text-ink/70 leading-relaxed mb-8 text-sm max-w-[80%] mx-auto">
         En todo este universo y vida detestable, tú eres mi paz al final del día. Eres mi tacita de café, mi pancito dulce, mi rebanada de pizza, cada pelito de mis gatitos, cada línea de código y cada latido de mi corazón; eres la parte fundamental de mi existencia. Sin ti yo no sería posible.
       </p>
-      <h2 className="font-display font-bold italic text-wine text-5xl md:text-6xl leading-[1.1]">
+      <h2 className="font-display font-bold italic text-wine text-2xl min-[380px]:text-3xl min-[420px]:text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.2] text-center w-full max-w-full min-w-0 m-0 p-0 box-border">
         Te Amo<br />Infinitamente
       </h2>
       <div className="mt-8 flex justify-center">
@@ -880,6 +880,10 @@ function isVideoUrl(url: string): boolean {
   return /\.(mp4|mov|webm|ogg)(?:$|[?#])/i.test(url);
 }
 
+function isFrameUrl(url: string): boolean {
+  return /^\/frames\/frame_\d{6}\.webp$/i.test(url);
+}
+
 async function preloadAsset(url: string): Promise<void> {
   try {
     const response = await fetch(url, { cache: 'force-cache' });
@@ -1056,7 +1060,7 @@ const Footer = () => {
 
 const SMOOTH_LERP = 0.09;
 
-const ScrollFramesSection = () => {
+const ScrollFramesSection = ({ frameSourceMap }: { frameSourceMap?: Record<string, string> }) => {
   const sectionRef = useRef<HTMLElement>(null);
   const [progress, setProgress] = useState(0);
   const targetPhraseRef = useRef(0);
@@ -1098,9 +1102,15 @@ const ScrollFramesSection = () => {
     };
 
     container.addEventListener('scroll', onScroll, { passive: true });
+    container.addEventListener('wheel', onScroll, { passive: true });
+    container.addEventListener('touchmove', onScroll, { passive: true });
     updateProgress();
 
-    return () => container.removeEventListener('scroll', onScroll);
+    return () => {
+      container.removeEventListener('scroll', onScroll);
+      container.removeEventListener('wheel', onScroll);
+      container.removeEventListener('touchmove', onScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -1120,7 +1130,8 @@ const ScrollFramesSection = () => {
   }, []);
 
   const frameNumber = Math.min(FRAME_COUNT, Math.max(1, Math.floor(progress * (FRAME_COUNT - 1)) + 1));
-  const frameSrc = `/frames/frame_${String(frameNumber).padStart(6, '0')}.webp`;
+  const framePath = `/frames/frame_${String(frameNumber).padStart(6, '0')}.webp`;
+  const frameSrc = frameSourceMap?.[framePath] ?? framePath;
   const darkness = Math.max(0, Math.min(0.88, (progress - 0.82) / 0.18));
   const phraseOpacity = smoothPhraseProgress;
   const phraseProgress = smoothPhraseProgress;
@@ -1149,7 +1160,7 @@ const ScrollFramesSection = () => {
             }}
           >
             <p className="font-display italic text-3xl text-cream tracking-wide">
-              Te elijo hoy, manana y siempre.
+              Te elijo hoy, mañana y siempre.
             </p>
           </div>
         </div>
@@ -1252,6 +1263,7 @@ export default function App() {
   const [showTicket, setShowTicket] = useState(false);
   const [isPreloading, setIsPreloading] = useState(true);
   const [preloadProgress, setPreloadProgress] = useState(0);
+  const [frameSourceMap, setFrameSourceMap] = useState<Record<string, string>>({});
   const ticketRef = useRef<HTMLElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -1259,6 +1271,7 @@ export default function App() {
 
   useEffect(() => {
     let cancelled = false;
+    const createdObjectUrls: string[] = [];
 
     const runPreload = async () => {
       const total = PRELOAD_ASSETS.length;
@@ -1271,6 +1284,7 @@ export default function App() {
       let cursor = 0;
       let completed = 0;
       const concurrency = Math.min(8, total);
+      const nextFrameSourceMap: Record<string, string> = {};
 
       const updateProgress = () => {
         if (cancelled) return;
@@ -1282,7 +1296,23 @@ export default function App() {
           const idx = cursor;
           cursor += 1;
           if (idx >= total) return;
-          await preloadAsset(PRELOAD_ASSETS[idx]);
+          const assetUrl = PRELOAD_ASSETS[idx];
+
+          if (isFrameUrl(assetUrl)) {
+            try {
+              const response = await fetch(assetUrl, { cache: 'force-cache' });
+              if (!response.ok) throw new Error(`HTTP ${response.status}`);
+              const blob = await response.blob();
+              const objectUrl = URL.createObjectURL(blob);
+              createdObjectUrls.push(objectUrl);
+              nextFrameSourceMap[assetUrl] = objectUrl;
+            } catch {
+              await preloadAsset(assetUrl);
+            }
+          } else {
+            await preloadAsset(assetUrl);
+          }
+
           completed += 1;
           updateProgress();
         }
@@ -1290,6 +1320,7 @@ export default function App() {
 
       await Promise.all(Array.from({ length: concurrency }, () => worker()));
       if (cancelled) return;
+      setFrameSourceMap(nextFrameSourceMap);
       setPreloadProgress(100);
       setTimeout(() => {
         if (!cancelled) setIsPreloading(false);
@@ -1300,6 +1331,7 @@ export default function App() {
 
     return () => {
       cancelled = true;
+      createdObjectUrls.forEach((url) => URL.revokeObjectURL(url));
     };
   }, []);
 
@@ -1329,7 +1361,7 @@ export default function App() {
         <Vows />
         <Surprise onOpen={handleOpenGift} />
         {showTicket && <Ticket ref={ticketRef} />}
-        <ScrollFramesSection />
+        <ScrollFramesSection frameSourceMap={frameSourceMap} />
         <LoveNote />
         <Footer />
       </div>
