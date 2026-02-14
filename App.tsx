@@ -18,10 +18,10 @@ const IMAGES = {
 };
 
 const VIDEOS = {
-  abrazoBeso: "/videos/4707741fc4f0405d8a8983778baa6210.mov",
-  momento: "/videos/ec8896647688464593de236fd51db88c.mov",
-  clip: "/videos/4707741fc4f0405d8a8983778baa6210.mov",
-  img0524: "/videos/IMG_0524.MOV",
+  abrazoBeso: "/videos/4707741fc4f0405d8a8983778baa6210.mp4",
+  momento: "/videos/ec8896647688464593de236fd51db88c.mp4",
+  clip: "/videos/4707741fc4f0405d8a8983778baa6210.mp4",
+  img0524: "/videos/IMG_0524.mp4",
 };
 
 const LOCAL_GALLERY = ["/images/IMG_9557.webp", "/images/IMG_9846.webp"];
@@ -648,7 +648,7 @@ const Memories = () => {
               <div className="aspect-video bg-ink relative">
                 <video
                   ref={video0524Ref}
-                  src={`${VIDEOS.img0524}#t=0,25`}
+                  src={VIDEOS.img0524}
                   className="absolute inset-0 w-full h-full object-cover"
                   playsInline
                   muted
