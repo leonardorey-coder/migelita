@@ -27,16 +27,15 @@ const VIDEOS = {
 const LOCAL_GALLERY = ["/images/IMG_9557.webp", "/images/IMG_9846.webp"];
 
 const LIGHTBOX_DESCRIPTIONS: Record<string, string> = {
-  [IMAGES.galleryHero]: '…aquí estábamos los dos.',
-  [IMAGES.gallerySunset]: '…aquella tarde dorada, callados mirando el atardecer.',
-  [IMAGES.galleryFlower]: '…el día que me regalaste flores.',
-  [IMAGES.galleryHands]: '…tomados de la mano, como siempre.',
-  [IMAGES.galleryCity]: '…esa noche en la ciudad, perdidos y felices.',
-  [IMAGES.galleryCoffee]: '…aquí estábamos comiendo felices.',
-  [IMAGES.galleryBeach]: '…el día que el mundo era solo nuestro.',
-  [IMAGES.detailVase]: '…un detalle que quedó guardado.',
-  "/images/IMG_9557.webp": '…un instante guardado.',
-  "/images/IMG_9846.webp": '…otro recuerdo contigo.',
+  [IMAGES.galleryHero]: 'Porque te amito demasiado mi amor, me metí dentro de tu mundo.',
+  [IMAGES.gallerySunset]: 'Me encanta demasiado cada fotito juntos mi vida.',
+  [IMAGES.galleryFlower]: 'A pesar de que el atardecer es increíblemente hermoso, no tendría razón de existir si no estuvieramos nosotros dos frente a él.',
+  [IMAGES.galleryHands]: 'Amo demasiado esas fotitos que siempre tomas al verte contenta y relajada al estar conmigo y tu familia mi vida.',
+  [IMAGES.galleryCity]: 'Me gusta que sale el Mc, el lugar donde nos empezamos a conocer bebis.',
+  [IMAGES.galleryCoffee]: 'Me gusta estar contigo en el pueblo mi vida, pero qué flojera me da el viaje :(.',
+  [IMAGES.galleryBeach]: 'Quiero repetir más cenas a tu lado mi cielito.',
+  "/images/IMG_9557.webp": 'Me encanta esta fotito porque sales dándome besitos mi amor, ajjaj.',
+  "/images/IMG_9846.webp": 'Eres la más hermosa mi niña.',
 };
 function getLightboxDescription(src: string): string {
   return LIGHTBOX_DESCRIPTIONS[src] ?? '…un instante guardado.';
@@ -109,7 +108,7 @@ const ParallaxImage = ({
 
 // --- Component Parts ---
 
-const Lightbox = ({ src, description, onClose }: { src: string; description?: string; onClose: () => void }) => {
+const Lightbox = ({ src, description, onClose, noRotate = false }: { src: string; description?: string; onClose: () => void; noRotate?: boolean }) => {
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -156,7 +155,7 @@ const Lightbox = ({ src, description, onClose }: { src: string; description?: st
       <div
         className="relative transition-transform duration-100 ease-out cursor-grab active:cursor-grabbing touch-none"
         style={{
-          transform: `scale(${scale}) translate(${position.x / scale}px, ${position.y / scale}px)`,
+          transform: `${noRotate ? '' : 'rotate(90deg) '}scale(${scale}) translate(${position.x / scale}px, ${position.y / scale}px)`,
         }}
         onClick={(e) => e.stopPropagation()}
         onWheel={handleWheel}
@@ -380,7 +379,7 @@ const Memories = () => {
 
   return (
     <section ref={sectionRef} className="bg-[#fefaf0] relative font-handwriting text-gray-800" style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/paper-fibers.png')" }}>
-      {selectedImage && <Lightbox src={selectedImage} description={getLightboxDescription(selectedImage)} onClose={() => setSelectedImage(null)} />}
+      {selectedImage && <Lightbox src={selectedImage} description={getLightboxDescription(selectedImage)} onClose={() => setSelectedImage(null)} noRotate={selectedImage === IMAGES.galleryHero} />}
 
       <div className="w-full relative overflow-x-hidden flex flex-col pb-24">
         {/* Header */}
