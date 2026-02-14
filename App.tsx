@@ -187,14 +187,8 @@ const Header = () => (
 );
 
 const Hero = () => (
-  <section className="relative min-h-[85vh] w-full bg-ink overflow-hidden border-b-4 border-ink shrink-0">
-    <img
-      alt="Couple B&W"
-      className="absolute inset-0 w-full h-full object-cover object-center opacity-80 grayscale contrast-125"
-      src={IMAGES.coupleHero}
-    />
-    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-ink/90" aria-hidden />
-    <div className="absolute bottom-12 left-6 right-6">
+  <section className="relative min-h-[85vh] w-full overflow-hidden border-b-4 border-ink shrink-0 bg-transparent">
+    <div className="absolute bottom-12 left-6 right-6 z-20">
       <h1 className="font-display italic text-cream text-6xl leading-[0.9] tracking-tighter mix-blend-difference">
         Nuestra<br />Historia
       </h1>
@@ -212,7 +206,7 @@ const IntroGrid = () => {
   const { getParallaxStyle } = useParallax();
 
   return (
-    <section className="relative bg-cream">
+    <section className="relative bg-cream z-20">
       <div className="grid grid-cols-2">
         <div ref={letterARef} className="aspect-square bg-ink border-r-4 border-b-4 border-ink flex items-center justify-center relative overflow-hidden">
           <div className="absolute inset-0 grid grid-cols-4 opacity-20 pointer-events-none">
@@ -1347,11 +1341,22 @@ export default function App() {
   }
 
   return (
-    <div className="flex justify-center h-screen overflow-hidden bg-neutral-200">
+    <div className="flex justify-center h-screen overflow-hidden bg-neutral-200 relative">
+      <div
+        className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[420px] h-screen pointer-events-none z-0"
+        aria-hidden
+      >
+        <img
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-80 grayscale contrast-125"
+          src={IMAGES.coupleHero}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-ink/90" aria-hidden />
+      </div>
       <div
         ref={scrollContainerRef}
         id="main-scroll-container"
-        className="relative w-full max-w-[420px] bg-cream h-screen overflow-y-auto overscroll-y-contain overflow-x-hidden flex flex-col shadow-2xl no-scrollbar"
+        className="relative z-10 w-full max-w-[420px] bg-transparent h-screen overflow-y-auto overscroll-y-contain overflow-x-hidden flex flex-col shadow-2xl no-scrollbar"
       >
         <Header />
         <Hero />
