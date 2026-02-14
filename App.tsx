@@ -1024,7 +1024,7 @@ const Footer = () => {
           </div>
           <div className="space-y-2">
             <span className="block font-body font-light text-5xl tracking-tight text-ink">
-              14.02.25
+              14.02.26
             </span>
             <span className="block text-[#b87333] font-body font-medium uppercase tracking-[0.4em] text-[10px] mt-4">
               Día de San Valentín
