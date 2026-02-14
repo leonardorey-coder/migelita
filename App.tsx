@@ -1,34 +1,30 @@
 import React, { useState, useEffect, useRef, useCallback, forwardRef } from 'react';
 
-import imgCoupleHero from './images/0d036f77-c18c-4f4a-926b-edcf7b02cdfb.jpg';
-import imgDetailVase from './images/7f2d03e1-f71d-4a37-bb7f-21d6f208ad52.jpg';
-import imgCoral from './images/coral.png';
-
-// --- Assets & Data ---
+// --- Assets (public/images = webp, public/videos = mov/mp4) ---
 const IMAGES = {
-  hero: imgCoral,
-  coupleHero: imgCoupleHero,
-  detailVase: imgDetailVase,
-  moodM: imgCoupleHero,
-  moodO: imgDetailVase,
-  moodR: imgDetailVase,
-  galleryHero: imgCoral,
-  gallerySunset: imgDetailVase,
-  galleryFlower: imgCoral,
-  galleryHands: imgCoupleHero,
-  galleryCity: imgDetailVase,
-  galleryCoffee: imgDetailVase,
-  galleryBeach: imgCoral,
+  hero: "/images/0d036f77-c18c-4f4a-926b-edcf7b02cdfb.webp",
+  coupleHero: "/images/0d036f77-c18c-4f4a-926b-edcf7b02cdfb.webp",
+  detailVase: "/images/7f2d03e1-f71d-4a37-bb7f-21d6f208ad52.webp",
+  moodM: "/images/0d036f77-c18c-4f4a-926b-edcf7b02cdfb.webp",
+  moodO: "/images/IMG_0949.webp",
+  moodR: "/images/IMG_0975.webp",
+  galleryHero: "/images/coral.webp",
+  gallerySunset: "/images/IMG_1250.webp",
+  galleryFlower: "/images/IMG_0980.webp",
+  galleryHands: "/images/IMG_1176.webp",
+  galleryCity: "/images/IMG_1352.webp",
+  galleryCoffee: "/images/IMG_8795.webp",
+  galleryBeach: "/images/IMG_8860.webp",
 };
 
 const VIDEOS = {
-  abrazoBeso: "/videos/Generando_video_de_abrazo_y_beso.mp4",
+  abrazoBeso: "/videos/4707741fc4f0405d8a8983778baa6210.mov",
   momento: "/videos/ec8896647688464593de236fd51db88c.mov",
   clip: "/videos/4707741fc4f0405d8a8983778baa6210.mov",
   img0524: "/videos/IMG_0524.MOV",
 };
 
-const LOCAL_GALLERY = [imgDetailVase, imgCoral];
+const LOCAL_GALLERY = ["/images/IMG_9557.webp", "/images/IMG_9846.webp"];
 
 const LIGHTBOX_DESCRIPTIONS: Record<string, string> = {
   [IMAGES.galleryHero]: '…aquí estábamos los dos.',
@@ -38,8 +34,9 @@ const LIGHTBOX_DESCRIPTIONS: Record<string, string> = {
   [IMAGES.galleryCity]: '…esa noche en la ciudad, perdidos y felices.',
   [IMAGES.galleryCoffee]: '…aquí estábamos comiendo felices.',
   [IMAGES.galleryBeach]: '…el día que el mundo era solo nuestro.',
-  [imgDetailVase]: '…un detalle que quedó guardado.',
-  [imgCoral]: '…ese día juntos.',
+  [IMAGES.detailVase]: '…un detalle que quedó guardado.',
+  "/images/IMG_9557.webp": '…un instante guardado.',
+  "/images/IMG_9846.webp": '…otro recuerdo contigo.',
 };
 function getLightboxDescription(src: string): string {
   return LIGHTBOX_DESCRIPTIONS[src] ?? '…un instante guardado.';
@@ -351,6 +348,14 @@ const Memories = () => {
   const cityRef = useRef<HTMLDivElement>(null);
   const coffeeRef = useRef<HTMLDivElement>(null);
   const beachRef = useRef<HTMLDivElement>(null);
+  const video0524Ref = useRef<HTMLVideoElement>(null);
+
+  const onVideo0524TimeUpdate = useCallback(() => {
+    const el = video0524Ref.current;
+    if (el && el.currentTime >= 25) {
+      el.currentTime = 0;
+    }
+  }, []);
 
   useEffect(() => {
     const container = document.getElementById('main-scroll-container');
@@ -440,7 +445,7 @@ const Memories = () => {
 
           <div className="relative z-10 mb-12 px-2">
             <div className="photo-frame rotate-[2deg] overflow-hidden max-w-sm mx-auto">
-              <div className="aspect-video bg-ink relative">
+              <div className="aspect-[4/3] bg-ink relative">
                 <video
                   src={VIDEOS.momento}
                   className="absolute inset-0 w-full h-full object-cover"
@@ -495,8 +500,8 @@ const Memories = () => {
                   <div className="overflow-hidden">
                     <img
                       alt="Ramo de flores"
-                      className="w-full aspect-square object-cover object-[center_78%] parallax-img"
-                      style={{ transform: `translateY(${scrollOffset * -0.015}px)` }}
+                      className="w-full aspect-square object-cover object-[center_78%] parallax-img rotate-90"
+                      style={{ transform: `translateY(${scrollOffset * -0.015}px) rotate(90deg)` }}
                       src={IMAGES.galleryFlower}
                     />
                   </div>
@@ -510,7 +515,7 @@ const Memories = () => {
             {/* Parallax Item 3 */}
             <div
               ref={handsRef}
-              className="absolute top-[280px] left-2 w-1/2 z-0"
+              className="absolute top-[520px] left-2 w-1/2 z-0"
               style={{ transform: `translateY(${scrollOffset * 0.02}px)` }}
             >
               <div
@@ -521,8 +526,8 @@ const Memories = () => {
                   <div className="overflow-hidden">
                     <img
                       alt="Manos entrelazadas"
-                      className="w-full aspect-square object-cover object-center parallax-img"
-                      style={{ transform: `translateY(${scrollOffset * 0.015}px)` }}
+                      className="w-full aspect-square object-cover object-center parallax-img rotate-90"
+                      style={{ transform: `translateY(${scrollOffset * 0.015}px) rotate(90deg)` }}
                       src={IMAGES.galleryHands}
                     />
                   </div>
@@ -560,11 +565,11 @@ const Memories = () => {
             {LOCAL_GALLERY.map((src, i) => (
               <div
                 key={i}
-                className="photo-frame cursor-zoom-in transition-transform hover:scale-[1.02] -rotate-1"
+                className={`photo-frame cursor-zoom-in transition-transform hover:scale-[1.02] -rotate-1 ${i === 1 ? '-mt-16' : ''}`}
                 onClick={() => openLightbox(src)}
               >
                 <div className="overflow-hidden aspect-square">
-                  <img src={src} alt="" className="w-full h-full object-cover object-center" />
+                  <img src={src} alt="" className="w-full h-full object-cover object-center rotate-90" />
                 </div>
               </div>
             ))}
@@ -613,8 +618,8 @@ const Memories = () => {
               <div className="overflow-hidden">
                 <img
                   alt="Cita de café"
-                  className="w-full h-56 object-cover object-center parallax-img"
-                  style={{ transform: `translateY(${scrollOffset * 0.02}px)` }}
+                  className="w-full h-56 object-cover object-center parallax-img rotate-90"
+                  style={{ transform: `translateY(${scrollOffset * 0.02}px) rotate(90deg)` }}
                   src={IMAGES.galleryCoffee}
                 />
               </div>
@@ -628,8 +633,8 @@ const Memories = () => {
               <div className="overflow-hidden">
                 <img
                   alt="Paseo en la playa"
-                  className="w-full h-56 object-cover object-center parallax-img"
-                  style={{ transform: `translateY(${scrollOffset * -0.02}px)` }}
+                  className="w-full h-56 object-cover object-center parallax-img rotate-90"
+                  style={{ transform: `translateY(${scrollOffset * -0.02}px) rotate(90deg)` }}
                   src={IMAGES.galleryBeach}
                 />
               </div>
@@ -637,6 +642,21 @@ const Memories = () => {
                 <div className="bg-primary rounded-full w-12 h-12 flex items-center justify-center text-white text-xs font-title rotate-12 shadow-lg ring-4 ring-white">
                   XOXO
                 </div>
+              </div>
+            </div>
+            <div className="self-start w-full max-w-sm photo-frame -rotate-1 overflow-hidden z-10">
+              <div className="aspect-video bg-ink relative">
+                <video
+                  ref={video0524Ref}
+                  src={`${VIDEOS.img0524}#t=0,25`}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  playsInline
+                  muted
+                  loop
+                  autoPlay
+                  onTimeUpdate={onVideo0524TimeUpdate}
+                  aria-label="Memoria en video"
+                />
               </div>
             </div>
           </div>
@@ -822,6 +842,119 @@ const Ticket = forwardRef<HTMLElement>(function Ticket(_, ref) {
 
 const ANNIVERSARY_DATE = new Date('2026-05-12T00:00:00');
 const FRAME_COUNT = 192;
+const FRAME_ASSETS = Array.from(
+  { length: FRAME_COUNT },
+  (_, idx) => `/frames/frame_${String(idx + 1).padStart(6, '0')}.webp`
+);
+const PRELOAD_ASSETS = Array.from(
+  new Set([
+    ...Object.values(IMAGES),
+    ...Object.values(VIDEOS),
+    ...LOCAL_GALLERY,
+    ...FRAME_ASSETS,
+    TICKET_QR_SRC,
+  ])
+);
+
+const HEART_PATTERN =
+  "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 45C30 45 15 35 15 25C15 15 25 15 30 20C35 15 45 15 45 25C45 35 30 45 30 45Z' fill='none' stroke='black' stroke-width='4'/%3E%3C/svg%3E\")";
+const PAPER_TEXTURE =
+  "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBpzyyprxyFZGAegrL30GAw-7CUnGNEpdgOVDwWKI7vrnQhfZL-taJGKfzQSiYQBLdW54UcEr8dCMIsv0EvpxqSM8lSdqERgrrlk1pJ0pflxa_23F5X4e8RksNks3m5XeIAy-xXHDAIvBTvda6qiK72VFZbhvlboqXu9sMJNbX0alb0NMGGnBwgEhQs5IrMf2yPXjnbBpHbfgQ4zSKd4WYWB1dJX4O7BHcfyoQcExXrXE8bGSJhOzN3m8ABw1FG8MXc0dtbHivexI4')";
+
+function isImageUrl(url: string): boolean {
+  return /\.(webp|png|jpg|jpeg|gif|svg)(?:$|[?#])/i.test(url);
+}
+
+function isVideoUrl(url: string): boolean {
+  return /\.(mp4|mov|webm|ogg)(?:$|[?#])/i.test(url);
+}
+
+async function preloadAsset(url: string): Promise<void> {
+  try {
+    const response = await fetch(url, { cache: 'force-cache' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    await response.blob();
+    return;
+  } catch {
+    if (isImageUrl(url)) {
+      await new Promise<void>((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve();
+        img.onerror = () => resolve();
+        img.src = url;
+      });
+      return;
+    }
+
+    if (isVideoUrl(url)) {
+      await new Promise<void>((resolve) => {
+        const video = document.createElement('video');
+        const done = () => {
+          video.onloadeddata = null;
+          video.onerror = null;
+          video.removeAttribute('src');
+          video.load();
+          resolve();
+        };
+        video.preload = 'auto';
+        video.muted = true;
+        video.playsInline = true;
+        video.onloadeddata = done;
+        video.onerror = done;
+        video.src = url;
+        video.load();
+      });
+    }
+  }
+}
+
+const LoadingSplash = ({ progress }: { progress: number }) => (
+  <main className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#f8f5f7] select-none">
+    <div className="absolute inset-0 flex w-full h-full z-0">
+      <div className="w-1/2 h-full bg-[#FFDE17] relative overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 opacity-20 scale-125" style={{ backgroundImage: HEART_PATTERN }} />
+        <div className="absolute inset-0 bg-black/5 mix-blend-multiply" />
+      </div>
+      <div className="w-1/2 h-full bg-[#FFF9F0] relative">
+        <div className="absolute inset-0 opacity-40" style={{ backgroundImage: PAPER_TEXTURE }} />
+        <div className="absolute inset-0 bg-gradient-to-l from-black/5 to-transparent" />
+      </div>
+    </div>
+
+    <div className="relative z-10 flex flex-col items-center justify-center pointer-events-none">
+      <div className="relative flex items-center justify-center">
+        <div className="flex gap-24 text-[140px] leading-none font-mono-pop text-black">
+          <span>L</span>
+          <span>V</span>
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center gap-12">
+          <span className="font-display italic text-7xl text-[#f90680]/90 mt-[-20px] ml-[-40px]">O</span>
+          <span className="font-display italic text-7xl text-[#f90680]/90 mt-[30px] mr-[-40px]">E</span>
+        </div>
+      </div>
+      <div className="mt-8 tracking-[0.35em] text-[10px] font-bold text-black uppercase bg-white/30 backdrop-blur-sm px-4 py-1 rounded border border-black/10">
+        San Valentín 2026
+      </div>
+    </div>
+
+    <div className="absolute bottom-16 left-1/2 -translate-x-1/2 w-[80%] max-w-sm z-20">
+      <div className="relative h-10 bg-white border-[3px] border-black shadow-[4px_4px_0_0_#000] rounded flex items-center overflow-hidden">
+        <div
+          className="absolute left-0 top-0 bottom-0 bg-[#f90680] border-r-[3px] border-black transition-all duration-300"
+          style={{ width: `${progress}%` }}
+        />
+        <div className="relative w-full flex justify-center items-center">
+          <span className="text-xs font-bold tracking-widest uppercase mix-blend-difference text-white">
+            Loading... {progress}%
+          </span>
+        </div>
+      </div>
+      <p className="mt-6 text-center text-[10px] font-bold text-black/60 uppercase tracking-tight">
+        de leoncito para gelita
+      </p>
+    </div>
+  </main>
+);
 
 function useCountdown(target: Date) {
   const [diff, setDiff] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -1106,10 +1239,58 @@ function useScrollInertia(containerRef: React.RefObject<HTMLDivElement | null>) 
 
 export default function App() {
   const [showTicket, setShowTicket] = useState(false);
+  const [isPreloading, setIsPreloading] = useState(true);
+  const [preloadProgress, setPreloadProgress] = useState(0);
   const ticketRef = useRef<HTMLElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useScrollInertia(scrollContainerRef);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const runPreload = async () => {
+      const total = PRELOAD_ASSETS.length;
+      if (!total) {
+        setPreloadProgress(100);
+        setIsPreloading(false);
+        return;
+      }
+
+      let cursor = 0;
+      let completed = 0;
+      const concurrency = Math.min(8, total);
+
+      const updateProgress = () => {
+        if (cancelled) return;
+        setPreloadProgress(Math.min(100, Math.round((completed / total) * 100)));
+      };
+
+      const worker = async () => {
+        while (!cancelled) {
+          const idx = cursor;
+          cursor += 1;
+          if (idx >= total) return;
+          await preloadAsset(PRELOAD_ASSETS[idx]);
+          completed += 1;
+          updateProgress();
+        }
+      };
+
+      await Promise.all(Array.from({ length: concurrency }, () => worker()));
+      if (cancelled) return;
+      setPreloadProgress(100);
+      setTimeout(() => {
+        if (!cancelled) setIsPreloading(false);
+      }, 250);
+    };
+
+    runPreload();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleOpenGift = useCallback(() => {
     setShowTicket(true);
@@ -1117,6 +1298,10 @@ export default function App() {
       ticketRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
   }, []);
+
+  if (isPreloading) {
+    return <LoadingSplash progress={preloadProgress} />;
+  }
 
   return (
     <div className="flex justify-center h-screen overflow-hidden bg-neutral-200">
